@@ -1,0 +1,57 @@
+    <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inventario y Ventas</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='auditoriainicio.css') }}">
+</head>
+ <!-- ... (otros encabezados) ... -->
+ <title>Inicios de sesión</title>
+ <!-- Agrega un campo de entrada de texto y un botón -->
+ <script>
+     function filtrarPorUsuario() {
+         var input, filter, table, tr, td, i, txtValue;
+         input = document.getElementById("usuarioInput");
+         filter = input.value.toUpperCase();
+         table = document.getElementById("tablaAuditoria");
+         tr = table.getElementsByTagName("tr");
+
+         for (i = 0; i < tr.length; i++) {
+             td = tr[i].getElementsByTagName("td")[0]; // Cambia el índice a la columna del usuario
+             if (td) {
+                 txtValue = td.textContent || td.innerText;
+                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                     tr[i].style.display = "";
+                 } else {
+                     tr[i].style.display = "none";
+                 }
+             }
+         }
+     }
+ </script>
+</head>
+<body>
+ <h1>Auditoría de Inicios de Sesión</h1>
+ 
+ <!-- Agrega un campo de entrada de texto y un botón -->
+ <input type="text" id="usuarioInput" onkeyup="filtrarPorUsuario()" placeholder="Filtrar por usuario">
+ 
+ <table id="tablaAuditoria">
+     <thead>
+         <tr>
+             <th>Usuario</th>
+             <th>Fecha y Hora de Inicio de Sesión</th>
+         </tr>
+     </thead>
+     <tbody>
+         {% for registro in registros_inicios_sesion %}
+         <tr>
+             <td>{{ registro.usuario }}</td>
+             <td>{{ registro.fecha_hora }}</td>
+         </tr>
+         {% endfor %}
+     </tbody>
+ </table>
+</body>
+</html>

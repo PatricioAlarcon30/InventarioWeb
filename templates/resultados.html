@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Agrega tus etiquetas de encabezado aquí -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='resultado.css') }}">
+</head>
+<body>
+    <h1>Resultado de la búsqueda</h1>
+
+    {% if producto %}
+        <!-- Muestra los detalles del producto -->
+        <ul>
+            <li>ID: {{ producto[0] }}</li>
+            <li>Nombre: {{ producto[1] }}</li>
+            <li>Descripción: {{ producto[2] }}</li>
+            <li>Cantidad: {{ producto[3] }}</li>
+            <li>Precio: {{ producto[4] }}</li>
+            <li>Ubicación: {{ producto[5] }}</li>
+        </ul>
+    {% else %}
+        <!-- Muestra el mensaje de "Producto no encontrado" -->
+        <p>producto no encontrado en base de datos </p>
+    {% endif %}
+
+    <!-- Puedes agregar más contenido o enlaces según tus necesidades -->
+    <a href="/index">Volver al Inicio</a>
+</body>
+</html>

@@ -1,0 +1,161 @@
+/* Estilo para la barra lateral */
+.sidebar {
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    color: #fff;
+    width: 250px;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+    left: 0;
+    top: 0;
+}
+
+/* Estilo para el título de la barra lateral */
+.sidebar h2 {
+    text-align: left;
+    color: white;
+    font-size: medium;
+    margin-bottom: 17px;
+}
+
+/* Estilo para la lista de opciones en la barra lateral */
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Estilo para los elementos de la lista en la barra lateral */
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+/* Estilo para los enlaces en la lista en la barra lateral */
+.sidebar ul li a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Estilo para los enlaces en estado hover (al pasar el cursor) en la barra lateral */
+.sidebar ul li a:hover {
+    background-color: #555;
+    color: greenyellow;
+}
+
+/* ----------------------- FIN SIDEBAR*/
+
+/* CSS para el encabezado h1 */
+h1 {
+    text-align: center;
+    margin: 20px;
+}
+
+/* CSS para el formulario de cierre de sesión */
+form {
+    text-align: center;
+}
+
+input[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #555;
+    color: #fff;
+}
+
+/* Estilos generales para el cuerpo de la página y otros elementos */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+/* Estilos para el segundo h1 "Auditoría de Ventas" */
+h1:nth-of-type(2) {
+    text-align: center;
+    margin: 20px;
+}
+
+/* Estilos para el formulario de filtrado */
+form:nth-of-type(2) {
+    text-align: center;
+    margin-top: 20px;
+    
+}
+
+/* Estilos para el botón de filtrar */
+button[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #ff4500;
+}
+
+/* Estilo para el contenedor de la tabla */
+.table-container {
+    max-height: 300px; /* Altura máxima para mostrar 15 registros */
+    overflow-y: auto; /* Agregar barra de desplazamiento vertical cuando sea necesario */
+}
+
+/* Estilos para la tabla */
+table {
+    font-family: Arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+    
+    
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    
+}
+
+/* Estilos para el tercer h1 "Auditoría de Inicio de Sesión" */
+h1:nth-of-type(3) {
+    text-align: center;
+    margin: 20px;
+}
+
+/* Estilos para el botón "Mostrar" */
+#btnMostrarAuditoria {
+    background-color: #333;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+#btnMostrarAuditoria:hover {
+    background-color: #ff4500;
+}
+
+/* Estilos para el script de la barra lateral */
+script:nth-of-type(2) {
+    display: none; /* Omitir el script de la barra lateral */
+}
+

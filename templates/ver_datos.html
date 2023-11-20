@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inventario y Ventas</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ver_datos.css') }}">
+</head>
+
+<body>
+    <!-- Muestra el valor del último inicio de sesión -->
+    <h1>Bienvenido, {{ username }}</h1>
+
+
+    <!-- Barra lateral izquierda -->
+    <nav id="sidebar" class="nav">
+        <div class="toggle-btn">
+            <span> &#9776 </span>
+        </div>
+        <ul class="list">
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="/static/menu.svg" class="list__img">
+                    <a href="#" class="nav__link"> Menú</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/index" class="nav__link nav__link--inside"> Inicio</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/ventas" class="nav__link nav__link--inside"> Ventas</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/cotizar" class="nav__link nav__link--inside"> Cotizar</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/informes" class="nav__link nav__link--inside"> Informes</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/ver_datos" class="nav__link nav__link--inside"> Inventario</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+            </li>
+
+
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="/static/worker.svg" class="list__img">
+                    <a href="#" class="nav__link"> Administracion</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/registro" class="nav__link nav__link--inside"> Registrar Producto</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/editar" class="nav__link nav__link--inside"> Editar Producto</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/auditoria" class="nav__link nav__link--inside"> Auditoria</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="static/build.svg" class="list__img">
+                    <a href="#" class="nav__link"> Empresa</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/modificar_folios" class="nav__link nav__link--inside"> Cambiar Folio</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/registro_usuario" class="nav__link nav__link--inside"> Registrar Usuario</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/informacion_empresa" class="nav__link nav__link--inside"> Informacion Empresa</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+
+        </ul>
+    </nav>
+
+    <h2>Inventario</h2>
+
+    <div id="filtro-container">
+        <input type="text" id="filtroNombre" placeholder="Filtrar por nombre">
+        <input type="text" id="filtroID" placeholder="Filtrar por ID">
+    </div>
+
+    <!-- Contenedor de los botones de ordenamiento -->
+    <div id="ordenar-container">
+        <button onclick="ordenarPorPrecio('asc')">Ordenar por Precio (Menor a Mayor)</button>
+        <button onclick="ordenarPorPrecio('desc')">Ordenar por Precio (Mayor a Menor)</button>
+    </div>
+
+    <!-- Contenido principal a la derecha -->
+    <div class="tabla-scroll">
+        <div class="product-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Ubicación</th>
+                        <th>Cantidad Maxima</th>
+                        <th>Cantidad Minima</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in articulos %}
+                    <tr data-nombre="{{ producto[1] }}" data-id="{{ producto[0] }}" data-cantidad="{{ producto[3] }}"
+                        data-cantidad-minima="{{ producto[7] }}">
+                        <td>{{ producto[0] }}</td>
+                        <td>{{ producto[1] }}</td>
+                        <td>{{ producto[2] }}</td>
+                        <td>{{ producto[3] }}</td>
+                        <td>{{ producto[4] }}</td>
+                        <td>{{ producto[5] }}</td>
+                        <td>{{ producto[6] }}</td>
+                        <td>{{ producto[7] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <form id="cerrar" method="POST" action="{{ url_for('logout') }}">
+        <input type="submit" value="Cerrar sesión">
+    </form>
+    <script>
+        // Función para ordenar la tabla por precio
+        function ordenarPorPrecio(tipoOrden) {
+            const tbody = document.querySelector('tbody');
+            const filas = Array.from(tbody.querySelectorAll('tr'));
+
+            // Compara las filas en función del precio
+            filas.sort((a, b) => {
+                const precioA = parseFloat(a.querySelector('td:nth-child(5)').textContent);
+                const precioB = parseFloat(b.querySelector('td:nth-child(5)').textContent);
+
+                if (tipoOrden === 'asc') {
+                    return precioA - precioB;
+                } else {
+                    return precioB - precioA;
+                }
+            });
+
+            // Limpia y vuelve a agregar las filas en el orden deseado
+            filas.forEach(fila => tbody.appendChild(fila));
+        }
+    </script>
+
+    <script>
+        // Obtén los elementos de entrada de filtro
+        const filtroNombre = document.getElementById('filtroNombre');
+        const filtroID = document.getElementById('filtroID');
+
+        // Agregar un evento de escucha de entrada de usuario
+        filtroNombre.addEventListener('input', filtrarTabla);
+        filtroID.addEventListener('input', filtrarTabla);
+
+        function filtrarTabla() {
+            const filtroNombreTexto = filtroNombre.value.toLowerCase();
+            const filtroIDTexto = filtroID.value.toLowerCase();
+            const filas = document.querySelectorAll('tbody tr');
+
+            filas.forEach((fila) => {
+                const nombre = fila.getAttribute('data-nombre').toLowerCase();
+                const id = fila.getAttribute('data-id').toLowerCase();
+
+                if (nombre.includes(filtroNombreTexto) && id.includes(filtroIDTexto)) {
+                    fila.style.display = 'table-row';
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+
+    <script>
+        let listElements = document.querySelectorAll('.list__button--click');
+        listElements.forEach(listElement => {
+            listElement.addEventListener('click', () => {
+                listElements.forEach(item => {
+                    if (item !== listElement) {
+                        item.nextElementSibling.style.height = '0';
+                    }
+                });
+
+                listElement.classList.toggle('arrow');
+
+                let height = 0;
+                let menu = listElement.nextElementSibling;
+                if (menu.clientHeight === 0) {
+                    height = menu.scrollHeight;
+                }
+
+                menu.style.height = height + 'px';
+            });
+        });
+    </script>
+    <!-- Popup para mostrar mensaje -->
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            </form><span class="cerrar-popup" onclick="cerrarPopup()">&times;</span>
+            <p id="mensaje-popup"></p>
+        </div>
+    </div>
+
+
+    <!-- Agrega el código JavaScript justo antes del cierre de </body> -->
+    <script>
+        // Función para verificar la cantidad mínima y mostrar el popup si es necesario
+        function verificarCantidadMinima() {
+            const filas = document.querySelectorAll('tbody tr');
+            const articulosBajoMinimo = [];
+
+            filas.forEach((fila) => {
+                const cantidad = parseFloat(fila.getAttribute('data-cantidad'));
+                const cantidadMinima = parseFloat(fila.getAttribute('data-cantidad-minima'));
+                const nombre = fila.getAttribute('data-nombre');
+
+                if (cantidad < cantidadMinima) {
+                    articulosBajoMinimo.push(nombre);
+                }
+            });
+
+            if (articulosBajoMinimo.length > 0) {
+                mostrarPopup(articulosBajoMinimo);
+            }
+        }
+
+        // Función para mostrar el popup con la lista de artículos
+        function mostrarPopup(articulos) {
+            const popup = document.getElementById('popup');
+            const mensajePopup = document.getElementById('mensaje-popup');
+
+            const listaArticulos = articulos.join(', '); // Convierte la lista en una cadena
+            mensajePopup.textContent = `Los siguientes artículos tienen una cantidad por debajo del mínimo: ${listaArticulos}.`;
+            popup.style.display = 'block';
+        }
+
+        // Función para cerrar el popup
+        function cerrarPopup() {
+            const popup = document.getElementById('popup');
+            popup.style.display = 'none';
+        }
+
+        // Llama a la función para verificar la cantidad mínima al cargar la página
+        verificarCantidadMinima();
+    </script>
+
+    <script>
+        // sidebar toggle
+        const btnToggle = document.querySelector('.toggle-btn');
+
+        btnToggle.addEventListener('click', function () {
+            console.log('clik')
+            document.getElementById('sidebar').classList.toggle('active');
+            console.log(document.getElementById('sidebar'))
+        });
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Archivos PDF</title>
+</head>
+<body>
+    <h1>Boletas en Sistema</h1>
+    <ul>
+        {% for archivo in archivos_pdf %}
+            <li>
+                <a href="{{ url_for('descargar_archivo_pdf', nombre_archivo=archivo) }}" target="_blank">{{ archivo }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <script>
+        function abrirVentana(url) {
+            // Abre una nueva ventana emergente
+            window.open(url, '_blank', 'width=600,height=400');
+        }
+    </script>
+
+</body>
+</html>

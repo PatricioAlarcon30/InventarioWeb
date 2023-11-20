@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Otros encabezados de HTML si los tienes -->
+</head>
+<body>
+    <h1>Modificar Folios de Factura</h1>
+
+    <form method="POST" action="/modificar_folios_factura">
+        <label for="folio_inicial_factura">Folio Inicial:</label>
+        <input type="text" id="folio_inicial_factura" name="folio_inicial_factura" required>
+        <br>
+        <label for="folio_final_factura">Folio Final:</label>
+        <input type="text" id="folio_final_factura" name="folio_final_factura" required>
+        <br>
+        <input type="submit" value="Guardar Cambios">
+    </form>
+
+    <!-- Flash messages si los tienes -->
+    <button onclick="abrirVentanaEmergente()">Ver Folios Actual</button>
+
+    <script>
+    var ventanaEmergente; // Variable global para almacenar la referencia a la ventana emergente
+    
+    function abrirVentanaEmergente() {
+        // Abre la ventana emergente con las dimensiones deseadas
+        ventanaEmergente = window.open('', 'VentanaEmergente', 'width=800,height=600');
+    
+        // Redirige la ventana emergente a la página que muestra los datos de folios.csv
+        ventanaEmergente.location.href = '/mostrar_folios_factura'; // Reemplaza con la URL correcta
+    
+        // Asegúrate de que la ventana emergente esté enfocada (opcional)
+        ventanaEmergente.focus();
+    }
+    
+    function cerrarVentanaEmergente() {
+        // Cierra la ventana emergente si está abierta
+        if (ventanaEmergente && !ventanaEmergente.closed) {
+            ventanaEmergente.close();
+        }
+    }
+    </script>
+
+    <!-- ---------------- Script SideBar -->
+
+    <script>
+        // Obtén la barra lateral por su clase
+    const sidebar = document.querySelector('.sidebar');
+    
+    // Define una zona de activación (en píxeles desde la izquierda) para mostrar la barra lateral
+    const activationZoneWidth = 200;
+    
+    // Función para mostrar la barra lateral
+    function showSidebar() {
+        sidebar.style.left = '0';
+    }
+    
+    // Función para ocultar la barra lateral
+    function hideSidebar() {
+        sidebar.style.left = '-250px';
+    }
+    
+    // Agregar un evento para mostrar la barra lateral cuando el ratón se acerca a la zona de activación
+    document.addEventListener('mousemove', (event) => {
+        if (event.clientX < activationZoneWidth) {
+            showSidebar();
+        } else {
+            hideSidebar();
+        }
+    });
+    
+    // Agregar un evento para ocultar la barra lateral cuando el ratón se aleja
+    sidebar.addEventListener('mouseleave', () => {
+        hideSidebar();
+    });
+    
+    </Script>
+    
+</body>
+</html>

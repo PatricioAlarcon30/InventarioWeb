@@ -1,0 +1,214 @@
+/* Estilos generales */
+body {
+    font-family: "Arial", sans-serif; /* Puedes cambiar "Arial" por la fuente que desees */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: rgb(242, 254, 252);
+
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+/* Estilos para el formulario */
+form:not(#cerrar) {
+    margin: 20px auto;
+    max-width: 400px;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    background-color: transparent;
+    border: 2px solid #ccc;
+}
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Estilos para los elementos de formulario */
+form input[type="text"],
+form input[type="password"],
+form select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-width: 90%;
+}
+
+/* Estilos para el botón "submit" */
+#registrar[type="submit"] {
+    background-color: #0077cc;
+    color: white;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+#registrar[type="submit"]:hover {
+    background-color: #F96F12; /* Cambiar el color de hover */
+}
+
+/* Estilos para el botón de cerrar sesión */
+#cerrar {
+    text-align: center;
+    margin: 0;
+}
+
+#cerrar button[type="submit"] {
+    background-color: #000;
+    color: white;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#cerrar button[type="submit"]:hover {
+    background-color: firebrick
+}
+
+
+/* Estilo para la barra de navegación */
+.nav {
+    width: 280px;
+    height: 100%;
+    font-size: 17.1px;
+    position: fixed;
+    top: 0;
+    left: -280px;
+    color: white;
+    background-color: #474545;
+    text-align: left; /* Alinea el texto a la izquierda */
+    transition: 500ms;
+}
+
+/* Alineación de contenido a la izquierda */
+.nav__link,
+.nav__link--inside {
+    text-align: left; /* Alinea el texto a la izquierda */
+    font-family: Arial, sans-serif;
+
+}
+
+/* Estilos para enlaces de navegación */
+.nav__link {
+    color: inherit;
+    padding: 15px 0;
+    display: block;
+    text-decoration: none;
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+.nav__link--inside {
+    padding-left: 20px;
+    border-radius: 6px;
+    text-align: left; /* Alinea el texto a la izquierda */
+    font-size: 16px;
+}
+
+.nav__link--inside a {
+    max-width: 40%;
+}
+
+.nav__link--inside:hover {
+    background: rgba(227, 217, 217, 0.46);
+    max-width: 70%;
+}
+
+/* Estilos para la lista y elementos */
+.list {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    border-radius: 0 16px 16px 0;
+    background: transparent;
+    align-items: flex-start; /* Alinea la lista a la izquierda */
+}
+
+.list__item {
+    list-style: none;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+.list__item--click {
+    cursor: pointer;
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+.list__button {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    gap: 1em;
+    margin: 0 auto;
+}
+
+.arrow .list__arrow {
+    transform: rotate(90deg);
+}
+
+.list__arrow {
+    margin-left: auto;
+    transition: transform .3s;
+}
+
+.list__show {
+    width: 80%;
+    margin-left: auto;
+    border-left: 2px solid #303440;
+    list-style: none;
+    transition: height .4s;
+    height: 0;
+}
+
+
+/* Estilos para la lista de productos cotizados */
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+#sidebar .toggle-btn span {
+    display: block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 20px;
+    border: 2px solid #000;
+    border-radius: 13px;
+    background-color: #000;
+
+}
+
+#sidebar .toggle-btn {
+    position: absolute;
+    left: 280px;
+    top: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+#sidebar.active {
+    left: 0px;
+}

@@ -1,0 +1,11 @@
+pip install Flask Flask-Principal
+pip install sqlite3
+pip install matplotlib
+pip install reportlab
+pip install fpdf
+pip install Jinja2
+pip install pdfkit
+
+
+
+pytho- java- jinja 2

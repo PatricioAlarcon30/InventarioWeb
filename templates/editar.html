@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Artículo</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='editar.css') }}">
+</head>
+<!-- Muestra el valor del último inicio de sesión -->
+<div id="Bienvenido">
+    <h1>Bienvenido, {{ username }}</h1>
+</div>
+
+<body>
+    <!-- Barra lateral izquierda -->
+    <nav id="sidebar" class="nav">
+        <div class="toggle-btn">
+            <span> &#9776 </span>
+        </div>
+        <ul class="list">
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="/static/menu.svg" class="list__img">
+                    <a href="#" class="nav__link"> Menú</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/index" class="nav__link nav__link--inside"> Inicio</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/ventas" class="nav__link nav__link--inside"> Ventas</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/cotizar" class="nav__link nav__link--inside"> Cotizar</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/informes" class="nav__link nav__link--inside"> Informes</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/ver_datos" class="nav__link nav__link--inside"> Inventario</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+            </li>
+
+
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="/static/worker.svg" class="list__img">
+                    <a href="#" class="nav__link"> Administracion</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/registro" class="nav__link nav__link--inside"> Registrar Producto</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/editar" class="nav__link nav__link--inside"> Editar Producto</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/auditoria" class="nav__link nav__link--inside"> Auditoria</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="static/build.svg" class="list__img">
+                    <a href="#" class="nav__link"> Empresa</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/modificar_folios" class="nav__link nav__link--inside"> Cambiar Folio</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/registro_usuario" class="nav__link nav__link--inside"> Registrar Usuario</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/informacion_empresa" class="nav__link nav__link--inside"> Informacion Empresa</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+
+        </ul>
+    </nav>
+
+    <h1>Editar Artículo</h1>
+    <!-- Contenido principal a la derecha -->
+    <div class="product-list">
+        <h2>Inventario Actual</h2>
+
+        <!-- Lista de productos en una tabla -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Ubicación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in articulos %}
+                <tr>
+                    <td>{{ producto[0] }}</td>
+                    <td>{{ producto[1] }}</td>
+                    <td>{{ producto[2] }}</td>
+                    <td>{{ producto[3] }}</td>
+                    <td>{{ producto[4] }}</td>
+                    <td>{{ producto[5] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <h3>Modificar datos</h3>
+
+    <form method="POST" action="/editar">
+        <label for="id">ID del Artículo:</label>
+        <input type="text" name="id" required><br><br>
+
+        <label for="nombre">Nuevo Nombre (opcional):</label>
+        <input type="text" name="nombre"><br>
+
+        <label for="cantidad">Nuevo Stock (opcional):</label>
+        <input type="text" name="cantidad"><br>
+
+        <label for="precio">Nuevo Precio (opcional):</label>
+        <input type="text" name="precio"><br>
+
+        <label for="ubicacion">Nueva Ubicación (opcional):</label>
+        <input type="text" name="ubicacion"><br><br>
+
+        <input id="editar" type="submit" value="Editar">
+    </form>
+
+    <h3>Eliminar Datos</h3>
+
+    <form method="POST" action="/eliminar_articulo">
+        <label for="id">ID del Artículo a Eliminar:</label>
+        <input type="text" name="id" required>
+        <button id="basurero" type="submit">
+            <img id="basurero" src="/static/basurero.png" alt="" width="20" height="20">
+        </button>
+    </form>
+
+    <form id="cerrar" method="POST" action="{{ url_for('logout') }}">
+        <input type="submit" value="Cerrar sesión">
+    </form>
+
+    <script>
+        let listElements = document.querySelectorAll('.list__button--click');
+        listElements.forEach(listElement => {
+            listElement.addEventListener('click', () => {
+                listElements.forEach(item => {
+                    if (item !== listElement) {
+                        item.nextElementSibling.style.height = '0';
+                    }
+                });
+
+                listElement.classList.toggle('arrow');
+
+                let height = 0;
+                let menu = listElement.nextElementSibling;
+                if (menu.clientHeight === 0) {
+                    height = menu.scrollHeight;
+                }
+
+                menu.style.height = height + 'px';
+            });
+        });
+    </script>
+
+    <script>
+        // sidebar toggle
+        const btnToggle = document.querySelector('.toggle-btn');
+
+        btnToggle.addEventListener('click', function () {
+            console.log('clik')
+            document.getElementById('sidebar').classList.toggle('active');
+            console.log(document.getElementById('sidebar'))
+        });
+
+    </script>
+
+
+</body>
+
+</html>

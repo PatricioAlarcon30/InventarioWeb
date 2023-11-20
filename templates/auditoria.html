@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inventario y Ventas</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='auditoria.css') }}">
+</head>
+<!-- Muestra el valor del último inicio de sesión -->
+<h1>Bienvenido, {{ username }}</h1>
+
+<body>
+    <!-- Barra lateral izquierda -->
+    <nav id="sidebar" class="nav">
+        <div class="toggle-btn">
+            <span> &#9776 </span>
+        </div>
+        <ul class="list">
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="/static/menu.svg" class="list__img">
+                    <a href="#" class="nav__link"> Menú</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/index" class="nav__link nav__link--inside"> Inicio</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/ventas" class="nav__link nav__link--inside"> Ventas</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/cotizar" class="nav__link nav__link--inside"> Cotizar</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/informes" class="nav__link nav__link--inside"> Informes</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/ver_datos" class="nav__link nav__link--inside"> Inventario</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+            </li>
+
+
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="/static/worker.svg" class="list__img">
+                    <a href="#" class="nav__link"> Administracion</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/registro" class="nav__link nav__link--inside"> Registrar Producto</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/editar" class="nav__link nav__link--inside"> Editar Producto</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/auditoria" class="nav__link nav__link--inside"> Auditoria</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="static/build.svg" class="list__img">
+                    <a href="#" class="nav__link"> Empresa</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/modificar_folios" class="nav__link nav__link--inside"> Cambiar Folio</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/registro_usuario" class="nav__link nav__link--inside"> Registrar Usuario</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/informacion_empresa" class="nav__link nav__link--inside"> Informacion Empresa</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+
+        </ul>
+    </nav>
+
+    <h1>Auditoría de Ventas</h1>
+
+    <form method="post">
+        <label for="fecha_inicio">Fecha de Inicio:</label>
+        <input type="date" id="fecha_inicio" name="fecha_inicio">
+
+        <label for="fecha_fin">Fecha de Fin:</label>
+        <input type="date" id="fecha_fin" name="fecha_fin">
+
+        <button type="submit">Filtrar por Fechas</button>
+    </form>
+
+
+    <div class="table-scroll-container">
+        <table border="1">
+            <thead>
+                <tr>
+
+                    <th>Tipo de Venta</th>
+                    <th>RUT del Cliente</th>
+                    <th>Articulo</th>
+                    <th>Total de la Venta</th>
+                    <th>Fecha de Venta</th>
+                    <th>Folio</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in datos_auditoria %}
+                <tr>
+
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+                    <td>{{ row[5] }}</td>
+                    <td>{{ row[6] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="botones-container">
+        <h1>Auditorías</h1>
+    
+        <button id="btnMostrarAuditoria">Auditoria Inicio De Sesion</button>
+        <button id="openModalButton">Auditoria de Movimientos</button>
+    </div>
+    
+
+    <form id="cerrar" method="POST" action="{{ url_for('logout') }}">
+        <input type="submit" value="Cerrar sesión">
+    </form>
+
+    <!-- Script para manejar la apertura de la ventana emergente -->
+    <script>
+        document.getElementById('openModalButton').addEventListener('click', function () {
+            // Abre la ventana emergente
+            window.open("/registros_auditoria", "RegistrosAuditoria", "width=800,height=600");
+        });
+    </script>
+
+
+    <script>
+        // Función para abrir la pestaña emergente
+        function abrirPestanaEmergente() {
+            // Abre una nueva ventana con la URL /mostrar_auditoria y el nombre "AuditoriaEmergente"
+            const ventanaEmergente = window.open('/mostrar_auditoria', 'AuditoriaEmergente', 'width=800,height=600');
+            ventanaEmergente.focus(); // Enfoca la nueva ventana emergente
+        }
+
+        // Agrega un evento de clic al botón
+        document.getElementById("btnMostrarAuditoria").addEventListener("click", abrirPestanaEmergente);
+    </script>
+
+    <script>
+        let listElements = document.querySelectorAll('.list__button--click');
+        listElements.forEach(listElement => {
+            listElement.addEventListener('click', () => {
+                listElements.forEach(item => {
+                    if (item !== listElement) {
+                        item.nextElementSibling.style.height = '0';
+                    }
+                });
+
+                listElement.classList.toggle('arrow');
+
+                let height = 0;
+                let menu = listElement.nextElementSibling;
+                if (menu.clientHeight === 0) {
+                    height = menu.scrollHeight;
+                }
+
+                menu.style.height = height + 'px';
+            });
+        });
+    </script>
+
+    <script>
+        // sidebar toggle
+        const btnToggle = document.querySelector('.toggle-btn');
+
+        btnToggle.addEventListener('click', function () {
+            console.log('clik')
+            document.getElementById('sidebar').classList.toggle('active');
+            console.log(document.getElementById('sidebar'))
+        });
+
+    </script>
+
+
+
+
+</body>
+
+</html>

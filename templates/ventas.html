@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inventario y Ventas - Ventas</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ventas.css') }}">
+</head>
+<!-- Muestra el valor del último inicio de sesión -->
+<h1>Bienvenido, {{ username }}</h1>
+
+<body>
+    <!-- Barra lateral izquierda -->
+    <nav id="sidebar" class="nav">
+        <div class="toggle-btn">
+            <span> &#9776 </span>
+        </div>
+        <ul class="list">
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="/static/menu.svg" class="list__img">
+                    <a href="#" class="nav__link"> Menú</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/index" class="nav__link nav__link--inside"> Inicio</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/ventas" class="nav__link nav__link--inside"> Ventas</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/cotizar" class="nav__link nav__link--inside"> Cotizar</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/informes" class="nav__link nav__link--inside"> Informes</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/ver_datos" class="nav__link nav__link--inside"> Inventario</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+            </li>
+
+
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="/static/worker.svg" class="list__img">
+                    <a href="#" class="nav__link"> Administracion</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/registro" class="nav__link nav__link--inside"> Registrar Producto</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/editar" class="nav__link nav__link--inside"> Editar Producto</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/auditoria" class="nav__link nav__link--inside"> Auditoria</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="static/build.svg" class="list__img">
+                    <a href="#" class="nav__link"> Empresa</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/modificar_folios" class="nav__link nav__link--inside"> Cambiar Folio</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/registro_usuario" class="nav__link nav__link--inside"> Registrar Usuario</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/informacion_empresa" class="nav__link nav__link--inside"> Informacion Empresa</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+
+        </ul>
+    </nav>
+
+    <div class="product-list">
+        <!-- Lista de productos en una tabla -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in articulos %}
+                <tr>
+                    <td>{{ producto[0] }}</td>
+                    <td>{{ producto[1] }}</td>
+                    <td>{{ producto[3] }}</td>
+                    <td>{{ producto[4] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Realizar Venta</h2>
+
+    <!-- Formulario para agregar artículos a la lista de venta -->
+    <form action="/agregar_venta" method="post">
+        <label for="id_producto">ID del Producto:</label>
+        <input type="text" id="id_producto" name="id_producto">
+        <label for="cantidad_venta">Cantidad:</label>
+        <input type="number" id="cantidad_venta" name="cantidad_venta" min="1" required>
+        <button type="submit">Agregar a la Venta</button>
+        <button id="limpiar" type="button" onclick="limpiarCampos()">Limpiar Campos</button>
+
+
+        <ul class="venta-lista">
+            {% for item in detalles_productos %}
+            <li>{{ item[1] }} (Cantidad: {{ item[2] }})</li>
+            {% endfor %}
+        </ul>
+    </form>
+
+    <h2>Productos en la Venta</h2>
+
+
+
+    <!-- Resto de tu contenido HTML aquí -->
+    <!-- Agrega campos para el tipo de venta, número de boleta y RUT del cliente -->
+    <form method="POST" action="/completar_venta">
+        <label for="tipo_venta">Tipo de Venta:</label>
+        <select id="tipo_venta" name="tipo_venta">
+            <option value="efectivo">Efectivo</option>
+            <option value="debito">Débito</option>
+            <option value="credito">Crédito</option>
+            <option value="cheque">Cheque</option>
+        </select>
+        <label for="fecha_venta">Fecha de Venta:</label>
+        <input type="date" id="fecha_venta" name="fecha_venta" required>
+
+
+        <br>
+        <label for="rut_cliente">RUT del Cliente (opcional):</label>
+        <input type="text" id="rut_cliente" name="rut_cliente">
+
+
+        </div>
+
+        <button type="submit">Completar Venta</button>
+
+    </form>
+
+    <!-- Agregar JavaScript aquí -->
+
+    <script>
+        let listElements = document.querySelectorAll('.list__button--click');
+        listElements.forEach(listElement => {
+            listElement.addEventListener('click', () => {
+                listElements.forEach(item => {
+                    if (item !== listElement) {
+                        item.nextElementSibling.style.height = '0';
+                    }
+                });
+
+                listElement.classList.toggle('arrow');
+
+                let height = 0;
+                let menu = listElement.nextElementSibling;
+                if (menu.clientHeight === 0) {
+                    height = menu.scrollHeight;
+                }
+
+                menu.style.height = height + 'px';
+            });
+        });
+    </script>
+
+    <script>
+        // Función para limpiar los campos de búsqueda y cantidad
+        function limpiarCampos() {
+            document.getElementById('id_producto').value = '';
+            document.getElementById('cantidad_venta').value = '';
+        }
+
+        // Función para limpiar la lista temporal de venta y recargar la página
+        function limpiarVenta() {
+            // Limpiar la lista temporal de venta
+            var listaTemporalVenta = document.querySelectorAll('.venta-lista ul li');
+            listaTemporalVenta.forEach(function (item) {
+                item.remove();
+            });
+
+            // Recargar la página
+            location.reload();
+        }
+    </script>
+
+    <script>
+        // sidebar toggle
+        const btnToggle = document.querySelector('.toggle-btn');
+
+        btnToggle.addEventListener('click', function () {
+            console.log('clik')
+            document.getElementById('sidebar').classList.toggle('active');
+            console.log(document.getElementById('sidebar'))
+        });
+
+    </script>
+
+    <iframe src="/archivos_pdf" width="500" height="300"></iframe>
+
+    <form id="cerrar" method="POST" action="{{ url_for('logout') }}">
+        <input type="submit" value="Cerrar sesión">
+    </form>
+
+
+</body>
+
+</html>

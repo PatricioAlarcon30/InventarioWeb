@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mostrar Folios de Factura</title>
+</head>
+<body>
+    <h1>Folios de Factura</h1>
+
+    <p>Folio Actual de Factura: {{ folio_actual_factura }}</p>
+
+    <h2>Listado de Folios de Factura</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Folio Inicial</th>
+                <th>Folio Final</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fila in datos_folios_factura %}
+                <tr>
+                    <td>{{ fila[0] }}</td>
+                    <td>{{ fila[1] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

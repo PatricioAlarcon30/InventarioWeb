@@ -1,0 +1,33 @@
+/* Estilo para la tabla */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px; /* Ancho máximo de la tabla */
+    margin: 20px auto; /* Centrar la tabla en la página */
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo para las celdas de encabezado */
+th {
+    background-color: #484848;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Estilo para las celdas de datos */
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+/* Estilo para las filas impares */
+tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+/* Estilo para hover (cuando el cursor está sobre una fila) */
+tr:hover {
+    background-color: #d1e0e0;
+}

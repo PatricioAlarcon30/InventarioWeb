@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inventario y Ventas - Ventas</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ventas.css') }}">
+</head>
+<!-- Muestra el valor del último inicio de sesión -->
+<h1>Bienvenido, {{ username }}</h1>
+    <form method="POST" action="{{ url_for('logout') }}">
+        <input type="submit" value="Cerrar sesión">
+    </form>
+
+
+<body>
+    <!-- Barra lateral izquierda -->
+    <div class="sidebar">
+        <h2>MENU</h2>
+    
+        <ul>
+            <li><a href="/index">Inicio</a></li>
+            <li><a href="/ventas">Ventas</a></li>
+            <li><a href="/informes">Informes</a></li>
+            <li><a href="/ver_datos">Inventario</a></li>
+            <h4>ADMINISTRACIÓN</h4>
+            <li><a href="/registro">Registrar Articulo</a></li>
+            <li><a href="/editar">Modificar Articulo</a></li>
+            <li><a href="/auditoria">Auditoria</a></li>
+            <h4>EMPRESA</h4>
+            <li><a href="/modificar_folios">Cambiar Folio</a></li>
+            <li><a href="/registro_usuario">Registrar usuario</a></li>
+            <li><a href="/informacion_empresa">informacion empresa</a></li>
+        </ul>
+    </div>
+
+    <!-- Contenido principal a la derecha -->
+    <div class="content">
+        <h1>Ventas</h1>
+        <h2>Realizar Venta</h2>
+
+        <!-- Formulario para agregar artículos a la lista de venta -->
+        <form action="/agregar_venta" method="post">
+            <label for="id_producto">ID del Producto:</label>
+            <input type="text" id="id_producto" name="id_producto">
+            <label for="cantidad_venta">Cantidad:</label>
+            <input type="number" id="cantidad_venta" name="cantidad_venta" min="1" required>
+            <button type="submit">Agregar a la Venta</button>
+            <button type="button" onclick="limpiarCampos()">Limpiar Campos</button>
+        </form>
+        <!-- Lista temporal de venta -->
+<div class="venta-lista">
+    <h1>Lista de Compra</h1>
+<table>
+ 
+  {% for detalle in detalles_productos %}
+  <tr>
+    <td>{{ detalle.nombre }}</td>
+    <td>{{ detalle.cantidad }}</td>
+    <td>${{ detalle.precio_unitario }}</td>
+    <td>${{ detalle.subtotal }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<p>Total: ${{ total_precio }}</p>
+
+<!-- Resto de tu contenido HTML aquí -->
+<!-- Agrega campos para el tipo de venta, número de boleta y RUT del cliente -->
+<form method="POST" action="/completar_venta">
+    <label for="tipo_venta">Tipo de Venta:</label>
+    <select id="tipo_venta" name="tipo_venta">
+        <option value="efectivo">Efectivo</option>
+        <option value="debito">Débito</option>
+        <option value="credito">Crédito</option>
+        <option value="cheque">Cheque</option>
+    </select>
+    <label for="fecha_venta">Fecha de venta:</label>
+    <input type="text" id="fecha_venta" name="fecha_venta" required>
+
+<br>
+<label for="rut_cliente">RUT del Cliente (opcional):</label>
+<input type="text" id="rut_cliente" name="rut_cliente">
+
+
+</div>
+
+    <button type="submit">Completar Venta</button>
+
+
+
+        <!-- Mensajes Flash para mostrar resultados de operaciones -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
+<!-- Agregar JavaScript aquí -->
+<!-- ----------------------------------------- -->
+
+<!-- script para sidebar -->
+<script>
+    // Obtén la barra lateral por su clase
+const sidebar = document.querySelector('.sidebar');
+
+// Define una zona de activación (en píxeles desde la izquierda) para mostrar la barra lateral
+const activationZoneWidth = 200;
+
+// Función para mostrar la barra lateral
+function showSidebar() {
+    sidebar.style.left = '0';
+}
+
+// Función para ocultar la barra lateral
+function hideSidebar() {
+    sidebar.style.left = '-250px';
+}
+
+// Agregar un evento para mostrar la barra lateral cuando el ratón se acerca a la zona de activación
+document.addEventListener('mousemove', (event) => {
+    if (event.clientX < activationZoneWidth) {
+        showSidebar();
+    } else {
+        hideSidebar();
+    }
+});
+
+// Agregar un evento para ocultar la barra lateral cuando el ratón se aleja
+sidebar.addEventListener('mouseleave', () => {
+    hideSidebar();
+});
+
+</Script>
+
+
+
+<!-- Agregar JavaScript aquí -->
+<script>
+    // Función para limpiar los campos de búsqueda y cantidad
+    function limpiarCampos() {
+        document.getElementById('id_producto').value = '';
+        document.getElementById('cantidad_venta').value = '';
+    }
+
+    // Función para limpiar la lista temporal de venta y recargar la página
+    function limpiarVenta() {
+        // Limpiar la lista temporal de venta
+        var listaTemporalVenta = document.querySelectorAll('.venta-lista ul li');
+        listaTemporalVenta.forEach(function(item) {
+            item.remove();
+        });
+        
+        // Recargar la página
+        location.reload();
+    }
+</script>
+
+<iframe src="/archivos_pdf" width="500" height="300"></iframe>
+
+
+</body>
+</html>

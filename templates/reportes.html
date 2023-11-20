@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sistema de Inventario y Ventas - Reportes</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+<body>
+<!-- Muestra el valor del último inicio de sesión -->
+<h1>Bienvenido, {{ username }}</h1>
+
+<body>
+    <!-- Barra lateral izquierda -->
+    <div class="sidebar">
+        <h2>MENU</h2>
+    
+        <ul>
+            <li><a href="/index">Inicio</a></li>
+            <li><a href="/ventas">Ventas</a></li>
+            <li><a href="/cotizar">Cotizar</a></li>
+            <li><a href="/informes">Informes</a></li>
+            <li><a href="/ver_datos">Inventario</a></li>
+            <h4>ADMINISTRACIÓN</h4>
+            <li><a href="/registro">Registrar Articulo</a></li>
+            <li><a href="/editar">Modificar Articulo</a></li>
+            <li><a href="/auditoria">Auditoria</a></li>
+            <h4>EMPRESA</h4>
+            <li><a href="/modificar_folios">Cambiar Folio</a></li>
+            <li><a href="/registro_usuario">Registrar usuario</a></li>
+            <li><a href="/informacion_empresa">informacion empresa</a></li>
+        </ul>
+    </div>
+<!-- Gráfico de Ventas -->
+<h1>Informes</h1>
+    
+    <!-- Muestra la imagen del gráfico -->
+    <img src="data:image/png;base64,{{ img_base64 }}" alt="Gráfico de Ventas">
+
+    <form id="cerrar" method="POST" action="{{ url_for('logout') }}">
+        <input type="submit" value="Cerrar sesión">
+    </form>
+
+</body>
+</html>

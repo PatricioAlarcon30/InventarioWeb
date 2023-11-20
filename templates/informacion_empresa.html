@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='info_empresa.css') }}">
+    <meta charset="UTF-8">
+    <title>Información de la Empresa</title>
+</head>
+<!-- Muestra el valor del último inicio de sesión -->
+
+<h1>Bienvenido, {{ username }}</h1>
+
+<body>
+    <!-- Barra lateral izquierda -->
+    <!-- Barra lateral izquierda -->
+    <nav id="sidebar" class="nav">
+        <div class="toggle-btn">
+            <span> &#9776 </span>
+        </div>
+        <ul class="list">
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="/static/menu.svg" class="list__img">
+                    <a href="#" class="nav__link"> Menú</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/index" class="nav__link nav__link--inside"> Inicio</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/ventas" class="nav__link nav__link--inside"> Ventas</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/cotizar" class="nav__link nav__link--inside"> Cotizar</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/informes" class="nav__link nav__link--inside"> Informes</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/ver_datos" class="nav__link nav__link--inside"> Inventario</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+            </li>
+
+
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="/static/worker.svg" class="list__img">
+                    <a href="#" class="nav__link"> Administracion</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/registro" class="nav__link nav__link--inside"> Registrar Producto</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/editar" class="nav__link nav__link--inside"> Editar Producto</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/auditoria" class="nav__link nav__link--inside"> Auditoria</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="static/build.svg" class="list__img">
+                    <a href="#" class="nav__link"> Empresa</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/modificar_folios" class="nav__link nav__link--inside"> Cambiar Folio</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/registro_usuario" class="nav__link nav__link--inside"> Registrar Usuario</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/informacion_empresa" class="nav__link nav__link--inside"> Informacion Empresa</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+
+        </ul>
+    </nav>
+
+    <h1>Información de la Empresa</h1>
+    <div id="contenedor">
+        <form method="POST" action="/modificar_informacion_empresa" enctype="multipart/form-data">
+            <input type="text" name="nombre" placeholder="Nombre de la Empresa" required>
+            <br>
+            <input type="text" name="rut" placeholder="RUT de la Empresa" required>
+            <br>
+            <input type="file" name="logo" accept="image/*" required>
+            <br>
+            <input type="text" name="direccion" placeholder="Dirección de la Empresa" required>
+            <br>
+            <input type="text" name="contacto" placeholder="Número de Contacto (opcional)">
+            <br>
+            <input type="text" name="correo" placeholder="Correo Electrónico (opcional)">
+            <br>
+            <input type="text" name="giro" placeholder="Giro de la Empresa (opcional)">
+
+            <input type="submit" value="Guardar Cambios">
+
+            <input type="hidden" name="nombre_imagen_anterior" value="{{ informacion_empresa['Logo'] }}">
+
+        </form>
+
+        <div id="info">
+            <p><strong>Nombre:</strong> {{ informacion_empresa['Nombre'] }}</p>
+            <p><strong>RUT:</strong> {{ informacion_empresa['RUT'] }}</p>
+            <p><strong>Dirección:</strong> {{ informacion_empresa['Dirección'] }}</p>
+            <p><strong>Número de Contacto:</strong> {{ informacion_empresa['Número de Contacto'] }}</p>
+            <p><strong>Correo Electrónico:</strong> {{ informacion_empresa['Correo Electrónico'] }}</p>
+            <p><strong>Giro:</strong> {{ informacion_empresa['Giro'] }}</p>
+            <p><strong>Logo Empresa:</strong> <img src="{{ url_for('static', filename=informacion_empresa['Logo']) }}"
+                    alt="Logo de la Empresa"></p>
+        </div>
+    </div>
+
+
+    <form id="cerrar" method="POST" action="{{ url_for('logout') }}">
+        <input type="submit" value="Cerrar sesión">
+    </form>
+
+    <script>
+        let listElements = document.querySelectorAll('.list__button--click');
+        listElements.forEach(listElement => {
+            listElement.addEventListener('click', () => {
+                listElements.forEach(item => {
+                    if (item !== listElement) {
+                        item.nextElementSibling.style.height = '0';
+                    }
+                });
+
+                listElement.classList.toggle('arrow');
+
+                let height = 0;
+                let menu = listElement.nextElementSibling;
+                if (menu.clientHeight === 0) {
+                    height = menu.scrollHeight;
+                }
+
+                menu.style.height = height + 'px';
+            });
+        });
+    </script>
+
+    <script>
+        // sidebar toggle
+        const btnToggle = document.querySelector('.toggle-btn');
+
+        btnToggle.addEventListener('click', function () {
+            console.log('clik')
+            document.getElementById('sidebar').classList.toggle('active');
+            console.log(document.getElementById('sidebar'))
+        });
+
+    </script>
+
+
+</body>
+
+</html>

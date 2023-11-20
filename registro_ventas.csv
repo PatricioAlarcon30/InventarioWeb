@@ -1,0 +1,34 @@
+id_venta,tipo_venta,rut_cliente,nombre_producto,total_venta,fecha_venta,folio,Nombre,RUT,Dirección,Número de Contacto,Correo Electrónico,Logo,Giro
+1,debito,19818294k,,599900,28/09/2023,0000039,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,,59990,28/09/2023,0000040,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,,1990,24-09-2023,0000041,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,efectivo,19818294k,Audifonos Blancos,59990,28/09/2023,0000042,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audifonos Blancos,59990,28/09/2023,0000043,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,LAPIZ AZUL,1990,28/09/2023,0000045,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audifonos Blancos,599900,28/09/2023,0000046,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,credito,19818294k,Audifonos Blancos,59990,24-09-2023,0000048,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audifonos Blancos,59990,28/09/2023,0000050,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audifonos Blancos,59990,28/09/2023,0000051,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audifonos Blancos,59990,28/09/2023,0000052,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audifonos Blancos,59990,28/09/2023,0000053,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audifonos Blancos,59990,28/09/2023,0000054,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audifonos Blancos,119980,28/09/2023,0000055,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audifonos Blancos,59990,28/09/2023,0000056,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audifonos Blancos,59990,28/09/2023,0000058,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,LAPIZ AZUL,1990,29-09-2023,0000059,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audifonos Blancos,59990,29-09-2023,0000061,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,efectivo,19818294k,Audifonos Blancos,59990,29-09-2023,0000063,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294K,Audífono Blanco,179970,30-09-2023,0000064,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Mouse,65980,02-10-2023,0000065,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audífono Blanco,59990,2023-10-04,0000066,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audífono Blanco,59990,2023-10-04,0000067,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,MousePad,247450,2023-10-04,0000068,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,1,1,2023-10-04,0000069,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,efectivo,19818294K,Audífono Blanco,59990,2023-10-09,0000070,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Joystick blanco,420000,2023-10-09,0000071,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,19818294k,Audífono Blanco,59990,2023-10-10,0000072,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,,caja,24444,1988-04-02,0000073,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,efectivo,,choclo,1998,2023-11-03,0000078,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,cheque,11111111111111111112,MousePad Rojo,5000,1998-10-02,0000081,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,11111,Weaita,40000,2023-11-16,0000083,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,debito,,Pilas,300,1999-07-26,0000084,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas

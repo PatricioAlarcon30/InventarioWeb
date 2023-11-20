@@ -1,0 +1,10 @@
+David  Camilo Duarte Carrizo
+
+25-09
+# Edicion de index.html
+    - Creación de contenedor con id = " recuadro estadisticas ventas"
+    - Se agregó el script correspondiente al sidebar
+    - Se agrego el estilo css correspondiente al contenedor con id = " recuadro estadisticas ventas"
+    - Tanto index.html como index.css listos
+    - Ventas.html y ventas.css listos
+    - Registro. html y registro.css listos

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cotizar.css') }}">
+    <title>Iniciar Sesión</title>
+</head>
+<!-- Barra lateral izquierda -->
+<!-- Barra lateral izquierda -->
+
+
+<body>
+
+
+    <!-- Barra lateral izquierda -->
+    <nav id="sidebar" class="nav">
+        <div class="toggle-btn">
+            <span> &#9776 </span>
+        </div>
+        <ul class="list">
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="/static/menu.svg" class="list__img">
+                    <a href="#" class="nav__link"> Menú</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/index" class="nav__link nav__link--inside"> Inicio</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/ventas" class="nav__link nav__link--inside"> Ventas</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/cotizar" class="nav__link nav__link--inside"> Cotizar</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/informes" class="nav__link nav__link--inside"> Informes</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/ver_datos" class="nav__link nav__link--inside"> Inventario</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+            </li>
+
+
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="/static/worker.svg" class="list__img">
+                    <a href="#" class="nav__link"> Administracion</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/registro" class="nav__link nav__link--inside"> Registrar Producto</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/editar" class="nav__link nav__link--inside"> Editar Producto</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/auditoria" class="nav__link nav__link--inside"> Auditoria</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+            <li class="list__item list__item--click">
+                <div class="list__button list__button--click">
+                    <img src="static/build.svg" class="list__img">
+                    <a href="#" class="nav__link"> Empresa</a>
+                    <img src="/static/arrow.svg" class="list__arrow">
+                </div>
+
+                <ul class="list__show">
+                    <li class="list__inside">
+                        <a href="/modificar_folios" class="nav__link nav__link--inside"> Cambiar Folio</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/registro_usuario" class="nav__link nav__link--inside"> Registrar Usuario</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+                    <li class="list__inside">
+                        <a href="/informacion_empresa" class="nav__link nav__link--inside"> Informacion Empresa</a>
+                        <!-- lo de arriba serian los link a los distintos html -->
+                    </li>
+
+                </ul>
+
+        </ul>
+    </nav>
+    <h1>Cotización</h1>
+
+    <!-- Formulario para agregar productos a la cotización -->
+    <form method="POST" action="/cotizar">
+        <div class="form-group">
+            <label for="id_producto">Producto:</label>
+            <select name="id_producto" id="id_producto">
+                {% for producto in productos_disponibles %}
+                <option value="{{ producto[0] }}">{{ producto[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="cantidad_cotizada">Cantidad:</label>
+            <input type="number" name="cantidad_cotizada" id="cantidad_cotizada" min="1" required>
+        </div>
+        <button type="submit">Agregar a la cotización</button>
+    </form>
+
+    <!-- Lista de productos cotizados -->
+    <h2>Productos Cotizados</h2>
+    <ul>
+        {% for item in lista_temporal_cotizacion %}
+        <li>{{ item['nombre_producto'] }} ({{ item['cantidad_cotizada'] }} unidades) - Precio Unitario: {{
+            item['precio_producto'] }} CLP</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Formulario para ingresar fecha, nombre, RUT, observaciones y descuento del cliente -->
+    <h2>Ingresar Fecha, Nombre, RUT, Observaciones y Descuento del Cliente</h2>
+    <form method="POST" action="/ingresar_datos">
+        <div class="form-group">
+            <label for="fecha_cotizacion">Fecha de Cotización:</label>
+            <input type="date" name="fecha_cotizacion" id="fecha_cotizacion" required>
+        </div>
+        <div class="form-group">
+            <label for="nombre_cliente">Nombre del Cliente:</label>
+            <input type="text" name="nombre_cliente" id="nombre_cliente" required>
+        </div>
+        <div class="form-group">
+            <label for="rut_cliente">RUT del Cliente:</label>
+            <input type="text" name="rut_cliente" id="rut_cliente" required>
+        </div>
+        <div class="form-group">
+            <label for="observaciones">Observaciones:</label>
+            <textarea name="observaciones" id="observaciones" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="descuento">Descuento (%):</label>
+            <input type="number" name="descuento" id="descuento" min="0" max="100">
+        </div>
+        <button type="submit">Guardar Cotización</button>
+    </form>
+
+    <form id="cerrar" method="POST" action="{{ url_for('logout') }}">
+        <input type="submit" value="Cerrar sesión">
+    </form>
+
+
+    <script>
+        let listElements = document.querySelectorAll('.list__button--click');
+        listElements.forEach(listElement => {
+            listElement.addEventListener('click', () => {
+                listElements.forEach(item => {
+                    if (item !== listElement) {
+                        item.nextElementSibling.style.height = '0';
+                    }
+                });
+
+                listElement.classList.toggle('arrow');
+
+                let height = 0;
+                let menu = listElement.nextElementSibling;
+                if (menu.clientHeight === 0) {
+                    height = menu.scrollHeight;
+                }
+
+                menu.style.height = height + 'px';
+            });
+        });
+    </script>
+
+    <script>
+        // sidebar toggle
+        const btnToggle = document.querySelector('.toggle-btn');
+
+        btnToggle.addEventListener('click', function () {
+            console.log('clik')
+            document.getElementById('sidebar').classList.toggle('active');
+            console.log(document.getElementById('sidebar'))
+        });
+
+    </script>
+
+<!-- Lista de archivos PDF en la carpeta 'cotizaciones' -->
+<h2>Cotizaciones en sistema</h2>
+<ul>
+    {% for archivo_pdf in archivos_pdf %}
+        <li><a href="{{ url_for('cotizaciones', filename=archivo_pdf) }}" target="_blank">{{ archivo_pdf }}</a></li>
+    {% endfor %}
+</ul>
+
+</body>
+
+</html>

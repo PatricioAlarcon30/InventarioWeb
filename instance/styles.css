@@ -1,0 +1,135 @@
+/* Estilos para el diseño básico */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+}
+/* Estilo para el contenido principal a la derecha */
+.content {
+    flex-grow: 1;
+    padding: 20px;
+}
+/* Estilo para la barra lateral izquierda */
+.sidebar {
+    width: 200px;
+    background-color: #20d5f5;
+    color: #030303;
+    padding: 20px;
+    position: relative; /* Añade posición relativa para elementos hijos posicionados absolutamente */
+}
+
+/* Estilo para el título "Opciones" */
+.sidebar h2 {
+    margin: 0;
+    background-color: #94f1ed;
+    padding: 10px;
+    position: absolute; /* Posiciona absolutamente dentro de .sidebar */
+    top: 0; /* Coloca el título en la parte superior de .sidebar */
+    left: 0; /* Coloca el título en la parte izquierda de .sidebar */
+    width: 91.5%; /* Asegura que el título ocupe todo el ancho de .sidebar */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 40px; /* Añade margen superior para dar espacio a las opciones */
+}
+
+.sidebar li {
+    margin-bottom: 10px;
+}
+
+/* Estilo para el contenido principal a la derecha */
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box; /* Evita que el padding afecte el ancho total */
+}
+
+/* Estilo para el cuerpo de la página */
+body {
+    background-color: #ffffff; /* Cambia el color de fondo a tu elección */
+}
+
+/* Estilo para la tabla */
+.product-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.product-list th,
+.product-list td {
+    border: 2.5px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.product-list th {
+    background-color: #f2f2f2;
+}
+
+.product-list tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.product-list tr:hover {
+    background-color: #ddd;
+}
+
+/* Estilo para el encabezado y título */
+.product-list h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Estilos para el formulario */
+form {
+    max-width: 100%; /* Cambia el ancho máximo del formulario */
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button[type="submit"] {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+.form-container {
+    margin-top: 20px; /* Agrega espacio entre formularios y títulos */
+}

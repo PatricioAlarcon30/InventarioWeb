@@ -1,0 +1,62 @@
+Sebastian Alfredo Farias Donoso 
+
+09-09
+#Investigación general de entornos de trabajo y programacion de base de datos
+
+10-09
+#Gestion de base de datos
+- Se gestiono base de datos
+- Se creo archivo SQLlite llamado "BDD.db" para funciones de base de datos en el sistema
+- Se gestiono Diccionario de datos de la base de datos respectiva
+
+14-09
+#inicio contruccion html y aplicacion flask Py
+- Se crearon html principales para las funciones principales del gestor d einventario
+- Se realizaron funciones basicas para aplicacion flask de Inventario
+- Se realizaron creaciones principales de css para parte grafica de la aplicacion
+- Se gestiono conexion completa de la base de datos con la aplicacion
+
+16-09
+#Ediciones de codigo
+- Se creo base de modificar datos de la base de datos completa funcionando
+
+17-09
+#Edicion de codigo
+- Se creo opción completa del apartado de ventas
+
+20-09
+- Se edita BDD para mejorar funciones
+- Se edita login para ingresar al sistema , se añade txt user para almacenar usuario
+- Se implementa apartado de LOGIN.HTML
+-basurero que permite eliminar al dar click y que aparezca una ventana emergente confirmando la eliminacion
+
+21-09
+- se agregan funciones de auditoria minimas
+- Se termina auditoria de ventas y almacenamiento de ventas realizadas en el sistem
+- Se usa filtro por fechas para la auditoria
+
+24-09
+- Se cambia guardado de ventas.txt a ventas.csv 
+- Se actualiza tabla de Auditoria de ventas con datos mas estructurados y más completos
+- Se implemento informes.html donde se mostraran graficos del sistema
+- se actualizo uso de matplotlib 
+- Se arreglaron detalles menores de ventas
+- Se mejoro y volvio a implementar menssaje de confirmacion al registrar producto
+- Se agregan opciones en Index donde se mostrara cantidad de ventas, usuarios y articulos llamado desde BDD que se han realizado en el sistema
+- Se agregan imagenes respectivas para funciones
+- Se cambio Ventas.csv (Cambiar informes)
+
+25-09
+- Se arregla y corrige distintas partes de los csv de folios con fin de actualizacion de los datos y guardado de los datos usados
+- Se arregla apartado de informes con nuevos datos
+- Se agrega visualizacion de usuario actual en el inventario
+- Se agrega sintaxis y boton para cerrar la sesion actual del usuario en cuestion
+- Se actualiza el editar folios
+- Se crea apartado para creación de usuarios en el sistema
+
+28-09
+- Se guardan datos de ventas y empresa en un csv para luego ser llamado como la empresa que acaba de realizar la venta
+
+
+
+

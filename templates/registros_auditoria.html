@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="static/registros_auditoria.css">
+
+<html>
+<head>
+    <title>Registros de Auditoría</title>
+</head>
+<body>
+    <h1>Registros de Auditoría</h1>
+
+    <label for="usuario">Filtrar por Usuario:</label>
+    <input type="text" id="usuario" name="usuario" placeholder="Nombre de usuario" oninput="filtrarRegistros()">
+    <label for="usuario">Filtrar por Usuario:</label>
+<input type="text" id="usuario" name="usuario" placeholder="Nombre de usuario" oninput="filtrarRegistros()">
+
+<label for="fecha">Filtrar por Fecha:</label>
+<input type="date" id="fecha" name="fecha" oninput="filtrarRegistros()">
+
+    <label for="filtro-articulos">Ver Modificaciones de articulo</label>
+    <input type="checkbox" id="filtro-articulos" name="filtro-articulos" onchange="filtrarRegistros()">
+    <label for="filtro-eliminaciones">Ver solo eliminaciones de artículos</label>
+    <input type="checkbox" id="filtro-eliminaciones" name="filtro-eliminaciones" onchange="filtrarRegistros()">
+    <label for="filtro-adiciones">Ver solo adiciones de artículos</label>
+    <input type="checkbox" id="filtro-adiciones" name="filtro-adiciones" onchange="filtrarRegistros()">
+
+
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Actividad</th>
+            <th>Fecha y Hora</th>
+        </tr>
+        {% for registro in registros %}
+        <tr>
+            <td>{{ registro[0] }}</td>
+            <td>{{ registro[1] }}</td>
+            <td>{{ registro[2] }}</td>
+            <td>{{ registro[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        function filtrarRegistros() {
+            const input = document.getElementById('usuario');
+            const filtro = input.value.toLowerCase();
+
+            const tabla = document.querySelector('table');
+            const filas = tabla.querySelectorAll('tr');
+
+            filas.forEach((fila, index) => {
+                if (index === 0) return; // Saltar la primera fila (encabezados)
+                const celdaUsuario = fila.querySelector('td:nth-child(2)');
+                const usuario = celdaUsuario.textContent.toLowerCase();
+                if (usuario.includes(filtro)) {
+                    fila.style.display = '';
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+        }
+
+
+        function filtrarRegistros() {
+    const input = document.getElementById('usuario');
+    const filtroUsuario = input.value.toLowerCase();
+
+    const checkbox = document.getElementById('filtro-articulos');
+    const filtroArticulos = checkbox.checked;
+
+    const tabla = document.querySelector('table');
+    const filas = tabla.querySelectorAll('tr');
+
+    filas.forEach((fila, index) => {
+        if (index === 0) return; // Saltar la primera fila (encabezados)
+        const celdaUsuario = fila.querySelector('td:nth-child(2)');
+        const celdaActividad = fila.querySelector('td:nth-child(3)');
+        const actividad = celdaActividad.textContent.toLowerCase();
+        const usuario = celdaUsuario.textContent.toLowerCase();
+
+        if ((filtroArticulos && actividad.includes('modificó un artículo')) || !filtroArticulos) {
+            if (usuario.includes(filtroUsuario) || !filtroUsuario) {
+                fila.style.display = '';
+            } else {
+                fila.style.display = 'none';
+            }
+        } else {
+            fila.style.display = 'none';
+        }
+    });
+}
+
+
+function filtrarRegistros() {
+    const input = document.getElementById('usuario');
+    const filtroUsuario = input.value.toLowerCase();
+
+    const checkboxEdiciones = document.getElementById('filtro-articulos');
+    const filtroEdiciones = checkboxEdiciones.checked;
+
+    const checkboxEliminaciones = document.getElementById('filtro-eliminaciones');
+    const filtroEliminaciones = checkboxEliminaciones.checked;
+
+    const tabla = document.querySelector('table');
+    const filas = tabla.querySelectorAll('tr');
+
+    filas.forEach((fila, index) => {
+        if (index === 0) return; // Saltar la primera fila (encabezados)
+        const celdaUsuario = fila.querySelector('td:nth-child(2)');
+        const celdaActividad = fila.querySelector('td:nth-child(3)');
+        const actividad = celdaActividad.textContent.toLowerCase();
+        const usuario = celdaUsuario.textContent.toLowerCase();
+
+        if ((filtroEdiciones && actividad.includes('modificó un artículo')) ||
+            (filtroEliminaciones && actividad.includes('eliminó un artículo')) ||
+            (!filtroEdiciones && !filtroEliminaciones)) {
+            if (usuario.includes(filtroUsuario) || !filtroUsuario) {
+                fila.style.display = '';
+            } else {
+                fila.style.display = 'none';
+            }
+        } else {
+            fila.style.display = 'none';
+        }
+    });
+}
+
+
+
+function filtrarRegistros() {
+    const input = document.getElementById('usuario');
+    const filtroUsuario = input.value.toLowerCase();
+
+    const checkboxEdiciones = document.getElementById('filtro-articulos');
+    const filtroEdiciones = checkboxEdiciones.checked;
+
+    const checkboxEliminaciones = document.getElementById('filtro-eliminaciones');
+    const filtroEliminaciones = checkboxEliminaciones.checked;
+
+    const checkboxAdiciones = document.getElementById('filtro-adiciones');
+    const filtroAdiciones = checkboxAdiciones.checked;
+
+    const tabla = document.querySelector('table');
+    const filas = tabla.querySelectorAll('tr');
+
+    filas.forEach((fila, index) => {
+        if (index === 0) return; // Saltar la primera fila (encabezados)
+        const celdaUsuario = fila.querySelector('td:nth-child(2)');
+        const celdaActividad = fila.querySelector('td:nth-child(3)');
+        const actividad = celdaActividad.textContent.toLowerCase();
+        const usuario = celdaUsuario.textContent.toLowerCase();
+
+        if ((filtroEdiciones && actividad.includes('modificó un artículo')) ||
+            (filtroEliminaciones && actividad.includes('eliminó un artículo')) ||
+            (filtroAdiciones && actividad.includes('agregó un artículo')) ||
+            (!filtroEdiciones && !filtroEliminaciones && !filtroAdiciones)) {
+            if (usuario.includes(filtroUsuario) || !filtroUsuario) {
+                fila.style.display = '';
+            } else {
+                fila.style.display = 'none';
+            }
+        } else {
+            fila.style.display = 'none';
+        }
+    });
+}
+function filtrarRegistros() {
+    const inputUsuario = document.getElementById('usuario');
+    const filtroUsuario = inputUsuario.value.toLowerCase();
+
+    const inputFecha = document.getElementById('fecha');
+    const filtroFecha = inputFecha.value;
+
+    const checkboxEdiciones = document.getElementById('filtro-articulos');
+    const filtroEdiciones = checkboxEdiciones.checked;
+
+    const checkboxEliminaciones = document.getElementById('filtro-eliminaciones');
+    const filtroEliminaciones = checkboxEliminaciones.checked;
+
+    const checkboxAdiciones = document.getElementById('filtro-adiciones');
+    const filtroAdiciones = checkboxAdiciones.checked;
+
+    const tabla = document.querySelector('table');
+    const filas = tabla.querySelectorAll('tr');
+
+    filas.forEach((fila, index) => {
+        if (index === 0) return; // Saltar la primera fila (encabezados)
+        const celdaUsuario = fila.querySelector('td:nth-child(2)');
+        const celdaFecha = fila.querySelector('td:nth-child(4)');
+        const celdaActividad = fila.querySelector('td:nth-child(3)');
+        const actividad = celdaActividad.textContent.toLowerCase();
+        const usuario = celdaUsuario.textContent.toLowerCase();
+        const fechaRegistro = celdaFecha.textContent;
+
+        if ((filtroEdiciones && actividad.includes('modificó un artículo')) ||
+            (filtroEliminaciones && actividad.includes('eliminó un artículo')) ||
+            (filtroAdiciones && actividad.includes('agregó un artículo')) ||
+            (!filtroEdiciones && !filtroEliminaciones && !filtroAdiciones)) {
+            if ((usuario.includes(filtroUsuario) || !filtroUsuario) &&
+                (fechaRegistro.includes(filtroFecha) || !filtroFecha)) {
+                fila.style.display = 'table-row'; // Mostrar la fila
+            } else {
+                fila.style.display = 'none'; // Ocultar la fila
+            }
+        } else {
+            fila.style.display = 'none'; // Ocultar la fila
+        }
+    });
+}
+
+
+    </script>
+    
+</body>
+</html>

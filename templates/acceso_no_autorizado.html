@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Agrega los enlaces a los archivos CSS y JS de Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <!-- Contenido de la página -->
+    <!-- Puedes agregar un botón para mostrar el modal si lo deseas -->
+    
+    <!-- Bootstrap Modal -->
+    <div class="modal" id="accesoNoAutorizadoModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Acceso no autorizado</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Debes ser un administrador para ver esta página.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="redirectToIndex()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agrega un script para mostrar el modal si lo deseas -->
+    <script>
+         // Función para redirigir al índice
+    function redirectToIndex() {
+        // Redirige al índice de tu sitio
+        window.location.href = '/index'; // Cambia '/index' al URL de tu página de inicio
+    }
+       
+        // Aquí hay un ejemplo que muestra el modal cuando se carga la página:
+        $(document).ready(function() {
+            $('#accesoNoAutorizadoModal').modal('show');
+        });
+    </script>
+</body>
+</html>

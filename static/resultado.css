@@ -1,0 +1,49 @@
+/* Estilos para el cuerpo de la página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Estilos para el encabezado */
+h1 {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Estilos para la lista de detalles del producto */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* Estilos para el mensaje de "Producto no encontrado" */
+p {
+    font-weight: bold;
+    color: #ff0000; /* Color rojo para resaltar el mensaje de error */
+}
+
+/* Estilos para el enlace de volver al inicio */
+a {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    text-decoration: none;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    width: 150px;
+    margin: 0 auto;
+}
+
+/* Estilos para el enlace de volver al inicio al pasar el cursor sobre él */
+a:hover {
+    background-color: #555;
+}

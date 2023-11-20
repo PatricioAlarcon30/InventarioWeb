@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas</title>
+</head>
+<body>
+    <h1>Ventas</h1>
+    
+    <!-- Lista de productos disponibles -->
+    <ul>
+        <li>
+            Producto 1
+            Precio: $10
+            <button class="agregar" data-id="1" data-nombre="Producto 1" data-precio="10">Agregar a la venta</button>
+        </li>
+        <li>
+            Producto 2
+            Precio: $15
+            <button class="agregar" data-id="2" data-nombre="Producto 2" data-precio="15">Agregar a la venta</button>
+        </li>
+        <!-- Agrega más productos aquí -->
+    </ul>
+    
+    <!-- Ventana emergente de detalles del producto -->
+    <div id="detalleProducto" class="ventana-emergente">
+        <h2>Detalles del Producto</h2>
+        <p>ID: <span id="detalleId"></span></p>
+        <p>Nombre: <span id="detalleNombre"></span></p>
+        <p>Precio: $<span id="detallePrecio"></span></p>
+        <p>Cantidad: <span id="detalleCantidad"></span></p>
+        <button id="cerrarDetalle">Cerrar</button>
+    </div>
+    
+    <script src="static/app.js"></script>
+</body>
+</html>

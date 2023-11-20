@@ -1,0 +1,264 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(242, 254, 252);
+}
+
+h1,
+h2 {
+    text-align: center;
+}
+
+/* Estilo para la barra de navegación */
+.nav {
+    width: 280px;
+    height: 100%;
+    font-size: 17.1px;
+    position: fixed;
+    top: 0;
+    left: -280px;
+    color: white;
+    background-color: #474545;
+    text-align: left; /* Alinea el texto a la izquierda */
+    transition: all 500ms;
+}
+
+/* Alineación de contenido a la izquierda */
+.nav__link,
+.nav__link--inside {
+    text-align: left; /* Alinea el texto a la izquierda */
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos para enlaces de navegación */
+.nav__link {
+    color: inherit;
+    padding: 15px 0;
+    display: block;
+    text-decoration: none;
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+.nav__link--inside {
+    padding-left: 20px;
+    border-radius: 6px;
+    text-align: left; /* Alinea el texto a la izquierda */
+    font-size: 16px;
+}
+
+.nav__link--inside a {
+    max-width: 40%;
+}
+
+.nav__link--inside:hover {
+    background: rgba(227, 217, 217, 0.46);
+    max-width: 70%;
+}
+
+/* Estilos para la lista y elementos */
+.list {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    border-radius: 0 16px 16px 0;
+    background: transparent;
+    align-items: flex-start; /* Alinea la lista a la izquierda */
+}
+
+.list__item {
+    list-style: none;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+.list__item--click {
+    cursor: pointer;
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+.list__button {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    gap: 1em;
+    margin: 0 auto;
+}
+
+.arrow .list__arrow {
+    transform: rotate(90deg);
+}
+
+.list__arrow {
+    margin-left: auto;
+    transition: transform .3s;
+}
+
+.list__show {
+    width: 80%;
+    margin-left: auto;
+    border-left: 2px solid #303440;
+    list-style: none;
+    transition: height .4s;
+    height: 0;
+}
+
+/* Estilos para la lista de productos cotizados */
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+#sidebar .toggle-btn span {
+    display: block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 20px;
+    border: 2px solid #000;
+    border-radius: 13px;
+    background-color: #000;
+}
+
+#sidebar .toggle-btn {
+    position: absolute;
+    left: 280px;
+    top: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+#sidebar.active {
+    left: 0px;
+}
+
+/* ------------- scroll para la tabla */
+.table-scroll-container {
+    max-height: 250px;
+    overflow-y: auto; /* Cambiar a 'auto' en lugar de 'scroll' */
+    margin-right: 50px; /* Eliminar el margen derecho o ajustar según sea necesario */
+    margin-left: 120px;
+}
+
+/* Estilos para la tabla de auditoría de ventas */
+.table-scroll-container table {
+    width: 74%;
+    margin: 0 auto; /* Añadir margen automático para centrar horizontalmente */
+    font-size: 14px;
+    border-collapse: collapse;
+    overflow: hidden; /* Añadir overflow hidden para esconder el scroll horizontal */
+}
+
+.table-scroll-container th {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2;
+    z-index: 1; /* Añadir un índice Z alto para que quede sobre el tbody */
+}
+
+.table-scroll-container tbody {
+    overflow-y: auto; /* Permitir que solo el tbody tenga un scroll vertical */
+    max-height: 250px;
+}
+
+.table-scroll-container td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: left;
+}
+
+/* Estilos para el formulario */
+form {
+    margin: 20px auto;
+    max-width: 400px;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    background-color: transparent;
+}
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Estilos para los elementos de formulario */
+form input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-width: 90%;
+}
+
+/* Estilos para el botón del formulario */
+form button[type="submit"] {
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 5px;
+}
+
+button[type="submit"]:hover {
+    background-color: #F96F12;
+    color: #fff;
+}
+
+/* Estilos para el contenedor de los botones */
+#botones-container {
+    text-align: center; /* Centra los elementos horizontalmente */
+    margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+}
+
+/* Estilos para los botones adicionales */
+#btnMostrarAuditoria,
+#openModalButton {
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 10px; /* Ajusta el margen según sea necesario */
+    text-align: center;
+    display: inline-block; /* Añade esta propiedad para que estén en línea */
+}
+
+#btnMostrarAuditoria:hover,
+#openModalButton:hover {
+    background-color: #F96F12;
+    color: #fff;
+}
+
+
+/* Estilos para el botón de cerrar sesión */
+#cerrar input[type="submit"] {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#cerrar input[type="submit"]:hover {
+    background-color: firebrick;
+}

@@ -1,0 +1,44 @@
+/* Estilo para la ventana emergente */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+    overflow: auto;
+  }
+  
+  /* Estilo para el contenido de la ventana emergente */
+  .popup-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+  
+  /* Estilo para el botón "Cerrar" en la ventana emergente */
+  .popup-close {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 28px;
+    cursor: pointer;
+  }
+  
+  /* Estilo para las notificaciones dentro de la ventana emergente */
+  .flashes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .flashes li {
+    margin: 5px 0;
+  }
+  

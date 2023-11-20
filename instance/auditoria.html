@@ -1,0 +1,131 @@
+    <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inventario y Ventas</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='auditoria.css') }}">
+</head>
+<!-- Muestra el valor del último inicio de sesión -->
+<h1>Bienvenido, {{ username }}</h1>
+    <form method="POST" action="{{ url_for('logout') }}">
+        <input type="submit" value="Cerrar sesión">
+    </form>
+
+
+<body>
+    <!-- Barra lateral izquierda -->
+    <div class="sidebar">
+        <h2>MENU</h2>
+    
+        <ul>
+            <li><a href="/index">Inicio</a></li>
+            <li><a href="/ventas">Ventas</a></li>
+            <li><a href="/informes">Informes</a></li>
+            <li><a href="/ver_datos">Inventario</a></li>
+            <h4>ADMINISTRACIÓN</h4>
+            <li><a href="/registro">Registrar Articulo</a></li>
+            <li><a href="/editar">Modificar Articulo</a></li>
+            <li><a href="/auditoria">Auditoria</a></li>
+            <h4>EMPRESA</h4>
+            <li><a href="/modificar_folios">Cambiar Folio</a></li>
+            <li><a href="/registro_usuario">Registrar usuario</a></li>
+            <li><a href="/informacion_empresa">informacion empresa</a></li>
+        </ul>
+    </div>
+
+    <h1>Auditoría de Ventas</h1>
+
+    <form method="post">
+        <label for="fecha_inicio">Fecha de Inicio:</label>
+        <input type="date" id="fecha_inicio" name="fecha_inicio">
+        
+        <label for="fecha_fin">Fecha de Fin:</label>
+        <input type="date" id="fecha_fin" name="fecha_fin">
+        
+        <button type="submit">Filtrar por Fechas</button>
+    </form>
+    
+    
+<div class="table-container">
+<table border="1">
+    <thead>
+        <tr>
+
+            <th>Tipo de Venta</th>
+            <th>Número de Boleta/Comprobante</th>
+            <th>RUT del Cliente</th>
+            <th>Total de la Venta</th>
+            <th>Fecha de Venta</th>
+            <th>Folio</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in datos_auditoria %}
+            <tr>
+
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>{{ row[5] }}</td>
+                <td>{{ row[6] }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+    <h1>Auditoría de Inicio de Sesión</h1>
+    <button id="btnMostrarAuditoria">Mostrar</button>
+
+    <script>
+        // Función para abrir la pestaña emergente
+        function abrirPestanaEmergente() {
+            // Abre una nueva ventana con la URL /mostrar_auditoria y el nombre "AuditoriaEmergente"
+            const ventanaEmergente = window.open('/mostrar_auditoria', 'AuditoriaEmergente', 'width=800,height=600');
+            ventanaEmergente.focus(); // Enfoca la nueva ventana emergente
+        }
+    
+        // Agrega un evento de clic al botón
+        document.getElementById("btnMostrarAuditoria").addEventListener("click", abrirPestanaEmergente);
+    </script>
+
+<script>
+    // Obtén la barra lateral por su clase
+const sidebar = document.querySelector('.sidebar');
+
+// Define una zona de activación (en píxeles desde la izquierda) para mostrar la barra lateral
+const activationZoneWidth = 200;
+
+// Función para mostrar la barra lateral
+function showSidebar() {
+    sidebar.style.left = '0';
+}
+
+// Función para ocultar la barra lateral
+function hideSidebar() {
+    sidebar.style.left = '-250px';
+}
+
+// Agregar un evento para mostrar la barra lateral cuando el ratón se acerca a la zona de activación
+document.addEventListener('mousemove', (event) => {
+    if (event.clientX < activationZoneWidth) {
+        showSidebar();
+    } else {
+        hideSidebar();
+    }
+});
+
+// Agregar un evento para ocultar la barra lateral cuando el ratón se aleja
+sidebar.addEventListener('mouseleave', () => {
+    hideSidebar();
+});
+
+</Script>
+
+
+
+    
+</body>
+</html>

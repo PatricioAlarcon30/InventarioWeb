@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Tus encabezados y estilos CSS aquí -->
+</head>
+<body>
+    <h1>Último Comprobante Generado</h1>
+    <hr>
+    {% if ultimo_comprobante %}
+    <embed src="{{ url_for('static', filename=ultimo_comprobante) }}" type="application/pdf" width="100%" height="600px">
+    {% else %}
+    <p>No se ha generado ningún comprobante aún.</p>
+    {% endif %}
+</body>
+</html>
