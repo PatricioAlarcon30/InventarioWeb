@@ -5,7 +5,3 @@ pip install reportlab
 pip install fpdf
 pip install Jinja2
 pip install pdfkit
-
-
-
-pytho- java- jinja 2

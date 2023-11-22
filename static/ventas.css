@@ -3,11 +3,10 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: rgb(242, 254, 252);
+    background-color: transparent;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    
 }
 
 h1,
@@ -15,23 +14,46 @@ h2 {
     text-align: center;
 }
 
-/* Estilos para la tabla de productos */
-.product-list table {
-    width: 54%;
+/* Estilos para la tabla de productos y scroll */
+.table-scroll-container {
+    width: 64%;
     margin: 20px auto;
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
     font-size: 14px;
+    border: 1px solid #ccc;
+    position: relative;
 }
 
-.product-list th,
-.product-list td {
+.table-scroll-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-scroll-container th,
+.table-scroll-container td {
     border: 1px solid #ccc;
     padding: 5px;
     text-align: left;
 }
 
-.product-list th {
+.table-scroll-container th {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+}
+
+.table-scroll-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+
+.table-scroll-container::-webkit-scrollbar-thumb {
+    background-color: #0077cc;
+    border-radius: 5px;
+}
+
+.table-scroll-container::-webkit-scrollbar-track {
     background-color: #f2f2f2;
 }
 
@@ -44,25 +66,6 @@ form {
     border-radius: 5px;
     text-align: center;
     background-color: transparent;
-}
-
-form label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-/* Estilos para los elementos de formulario */
-form input[type="text"],
-form input[type="number"],
-form textarea,
-form select {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    max-width: 90%;
 }
 
 /* Estilos para los botones de formulario */
@@ -131,7 +134,6 @@ button[type="button"] {
     margin-top: 10px;
 }
 
-
 /* Estilos para el select de tipo de venta */
 select {
     width: 100%;
@@ -177,6 +179,7 @@ form#completar-venta button[type="submit"] {
     background-color: #474545;
     text-align: left; /* Alinea el texto a la izquierda */
     transition: 500ms;
+    z-index: 1;
 }
 
 /* Alineación de contenido a la izquierda */
@@ -184,7 +187,6 @@ form#completar-venta button[type="submit"] {
 .nav__link--inside {
     text-align: left; /* Alinea el texto a la izquierda */
     font-family: Arial, sans-serif;
-
 }
 
 /* Estilos para enlaces de navegación */
@@ -263,7 +265,6 @@ form#completar-venta button[type="submit"] {
     height: 0;
 }
 
-
 /* Estilos para la lista de productos cotizados */
 ul {
     list-style: none;
@@ -284,7 +285,6 @@ li {
     border: 2px solid #000;
     border-radius: 13px;
     background-color: #000;
-
 }
 
 #sidebar .toggle-btn {
@@ -298,3 +298,44 @@ li {
 #sidebar.active {
     left: 0px;
 }
+
+
+
+/* Estilos para el contenedor de formularios */
+.form-container {
+    margin: 20px auto; /* Cambia el margin para centrar horizontalmente */
+    padding: 20px;
+    width: 80%; /* Ajusta el ancho del contenedor */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center; /* Alinea el contenido al centro */
+    display: flex; /* Usa flexbox para colocar los formularios uno al lado del otro */
+    justify-content: space-between; /* Alinea los formularios al espacio disponible */
+}
+
+/* Ajusta el ancho de cada formulario */
+.form-container form {
+    width: 48%; /* Puedes ajustar este valor según tus necesidades */
+    margin-top: 70px;
+}
+
+/* Estilos para los labels dentro del form-container */
+.form-container label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333; /* Color del texto del label */
+}
+
+/* Estilos para los inputs dentro del form-container */
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+

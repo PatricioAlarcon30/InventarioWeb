@@ -114,38 +114,38 @@
     </div>
 
     <!-- Contenido principal a la derecha -->
-    <div class="tabla-scroll">
-        <div class="product-list">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
-                        <th>Ubicación</th>
-                        <th>Cantidad Maxima</th>
-                        <th>Cantidad Minima</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for producto in articulos %}
-                    <tr data-nombre="{{ producto[1] }}" data-id="{{ producto[0] }}" data-cantidad="{{ producto[3] }}"
-                        data-cantidad-minima="{{ producto[7] }}">
-                        <td>{{ producto[0] }}</td>
-                        <td>{{ producto[1] }}</td>
-                        <td>{{ producto[2] }}</td>
-                        <td>{{ producto[3] }}</td>
-                        <td>{{ producto[4] }}</td>
-                        <td>{{ producto[5] }}</td>
-                        <td>{{ producto[6] }}</td>
-                        <td>{{ producto[7] }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    <div class="table-scroll-container">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Ubicación</th>
+                    <th>Cantidad Maxima</th>
+                    <th>Cantidad Minima</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in articulos %}
+                <tr data-nombre="{{ producto[1] }}" data-id="{{ producto[0] }}" data-cantidad="{{ producto[3] }}"
+                    data-cantidad-minima="{{ producto[7] }}">
+                    <td>{{ producto[0] }}</td>
+                    <td>{{ producto[1] }}</td>
+                    <td>{{ producto[2] }}</td>
+                    <td>{{ producto[3] }}</td>
+                    <td>{{ producto[4] }}</td>
+                    <td>{{ producto[5] }}</td>
+                    <td>{{ producto[6] }}</td>
+                    <td>{{ producto[7] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
     </div>
 
     <form id="cerrar" method="POST" action="{{ url_for('logout') }}">

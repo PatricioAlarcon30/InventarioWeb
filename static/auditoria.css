@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: rgb(242, 254, 252);
+    background-color: transparent;
 }
 
 h1,
@@ -23,6 +23,7 @@ h2 {
     background-color: #474545;
     text-align: left; /* Alinea el texto a la izquierda */
     transition: all 500ms;
+    z-index: 1;
 }
 
 /* Alineación de contenido a la izquierda */
@@ -156,14 +157,13 @@ li {
     margin: 0 auto; /* Añadir margen automático para centrar horizontalmente */
     font-size: 14px;
     border-collapse: collapse;
-    overflow: hidden; /* Añadir overflow hidden para esconder el scroll horizontal */
+
 }
 
 .table-scroll-container th {
     position: sticky;
     top: 0;
     background-color: #f2f2f2;
-    z-index: 1; /* Añadir un índice Z alto para que quede sobre el tbody */
 }
 
 .table-scroll-container tbody {

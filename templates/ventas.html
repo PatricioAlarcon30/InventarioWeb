@@ -98,7 +98,7 @@
         </ul>
     </nav>
 
-    <div class="product-list">
+    <div class="table-scroll-container">
         <!-- Lista de productos en una tabla -->
         <table>
             <thead>
@@ -122,54 +122,55 @@
         </table>
     </div>
 
-    <h2>Realizar Venta</h2>
+    <h2>Efectuar Transacción Comercial</h2>
 
     <!-- Formulario para agregar artículos a la lista de venta -->
-    <form action="/agregar_venta" method="post">
-        <label for="id_producto">ID del Producto:</label>
-        <input type="text" id="id_producto" name="id_producto">
-        <label for="cantidad_venta">Cantidad:</label>
-        <input type="number" id="cantidad_venta" name="cantidad_venta" min="1" required>
-        <button type="submit">Agregar a la Venta</button>
-        <button id="limpiar" type="button" onclick="limpiarCampos()">Limpiar Campos</button>
+    <div class="form-container">
+
+        <h3>Realizar Venta</h3>
+
+        <!-- Formulario para agregar artículos a la lista de venta -->
+        <form action="/agregar_venta" method="post">
+            <label for="id_producto">ID del Producto:</label>
+            <input type="text" id="id_producto" name="id_producto">
+            <label for="cantidad_venta">Cantidad:</label>
+            <input type="number" id="cantidad_venta" name="cantidad_venta" min="1" required>
+            <button type="submit">Agregar a la Venta</button>
+            <button id="limpiar" type="button" onclick="limpiarCampos()">Limpiar Campos</button>
 
 
-        <ul class="venta-lista">
-            {% for item in detalles_productos %}
-            <li>{{ item[1] }} (Cantidad: {{ item[2] }})</li>
-            {% endfor %}
-        </ul>
-    </form>
+            <ul class="venta-lista">
+                {% for item in detalles_productos %}
+                <li>{{ item[1] }} (Cantidad: {{ item[2] }})</li>
+                {% endfor %}
+            </ul>
+        </form>
 
-    <h2>Productos en la Venta</h2>
+        <h3>Productos en la Venta</h3>
 
-
-
-    <!-- Resto de tu contenido HTML aquí -->
-    <!-- Agrega campos para el tipo de venta, número de boleta y RUT del cliente -->
-    <form method="POST" action="/completar_venta">
-        <label for="tipo_venta">Tipo de Venta:</label>
-        <select id="tipo_venta" name="tipo_venta">
-            <option value="efectivo">Efectivo</option>
-            <option value="debito">Débito</option>
-            <option value="credito">Crédito</option>
-            <option value="cheque">Cheque</option>
-        </select>
-        <label for="fecha_venta">Fecha de Venta:</label>
-        <input type="date" id="fecha_venta" name="fecha_venta" required>
+        <!-- Agrega campos para el tipo de venta, número de boleta y RUT del cliente -->
+        <form method="POST" action="/completar_venta">
+            <label for="tipo_venta">Tipo de Venta:</label>
+            <select id="tipo_venta" name="tipo_venta">
+                <option value="efectivo">Efectivo</option>
+                <option value="debito">Débito</option>
+                <option value="credito">Crédito</option>
+                <option value="cheque">Cheque</option>
+            </select>
+            <label for="fecha_venta">Fecha de Venta:</label>
+            <input type="date" id="fecha_venta" name="fecha_venta" required>
 
 
-        <br>
-        <label for="rut_cliente">RUT del Cliente (opcional):</label>
-        <input type="text" id="rut_cliente" name="rut_cliente">
+            <br>
+            <label for="rut_cliente">RUT del Cliente (opcional):</label>
+            <input type="text" id="rut_cliente" name="rut_cliente">
+
+            <button type="submit">Completar Venta</button>
 
 
-        </div>
+        </form>
 
-        <button type="submit">Completar Venta</button>
-
-    </form>
-
+    </div>
     <!-- Agregar JavaScript aquí -->
 
     <script>

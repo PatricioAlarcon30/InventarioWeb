@@ -47,3 +47,14 @@ id_venta, tipo_venta, rut_cliente, nombre_producto, total_venta, fecha_venta, fo
 1,debito,11111,Weaita,40000,16-11-2023,0000083
 1,debito,11111,Weaita,40000,16-11-2023,0000083
 1,debito,,Pilas,300,26-07-1999,0000084
+1,debito,,choclo,1998,16-11-2023,0000089
+1,efectivo,,Pilas,200,16-11-2023,0000092
+1,efectivo,,Caja,4000,17-11-2023,0000093
+1,cheque,,Funko 1,19980,17-11-2023,0000095
+1,debito,,MousePad Rojo,7500,17-11-2023,0000096
+1,debito,,Mouse nuevo,150000,20-11-2023,0000098
+1,efectivo,,Mouse nuevo,150000,20-11-2023,0000103
+1,efectivo,,Mouse nuevo,150000,20-11-2023,0000105
+1,efectivo,,MousePad,6000,20-11-2023,0000106
+1,efectivo,,Caja,80000,17-11-2023,0000107
+1,efectivo,,Caja,80000,17-11-2023,0000107

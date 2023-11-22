@@ -7,8 +7,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    background-color: rgb(242, 254, 252);
+    background-color: transparent;
 
 }
 
@@ -16,7 +15,6 @@ body {
 h1 {
     text-align: center;
     font-size: 24px;
-    margin: 20px;
 }
 
 /* Estilo para la barra de navegación */
@@ -31,6 +29,7 @@ h1 {
     background-color: #474545;
     text-align: left; /* Alinea el texto a la izquierda */
     transition: 500ms;
+    z-index: 1;
 }
 
 /* Alineación de contenido a la izquierda */
@@ -155,31 +154,53 @@ li {
 
 
 
-/* Estilo para la tabla de productos y su contenedor */
-.tabla-scroll {
-    padding: 20px;
-    text-align: center;
-    overflow-x: auto;
+.table-scroll-container {
+    width: 64%;
+    margin: 20px auto;
     max-height: 250px;
     overflow-y: auto;
-}
-
-.product-list table {
-    font-family: Arial, Helvetica, sans-serif;
-    width: 100%;
     font-size: 14px;
+    position: relative;
+    margin-top: 40px;
 }
 
-/* Estilo para las celdas de la tabla de productos */
-.product-list th,
-.product-list td {
+
+/* Estilos para la tabla de productos */
+.table-scroll-container table {
+    width: 100%;
+    border-collapse: collapse;
+
+}
+
+.table-scroll-container table-scroll {
+    overflow-y: auto;
+    overflow-x: scroll;
+}
+
+.table-scroll-container th,
+.table-scroll-container td {
     border: 1px solid #ccc;
     padding: 5px;
     text-align: left;
-    white-space: nowrap;
 }
 
-.product-list th {
+.table-scroll-container th {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+}
+
+.table-scroll-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+
+.table-scroll-container::-webkit-scrollbar-thumb {
+    background-color: #0077cc;
+    border-radius: 5px;
+}
+
+.table-scroll-container::-webkit-scrollbar-track {
     background-color: #f2f2f2;
 }
 

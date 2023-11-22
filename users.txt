@@ -3,6 +3,3 @@ vendedor:vendedor:vendedor
 seba:seba:administrador
 david:david:administrador
 1:1:vendedor
-admin:admin:vendedor
-admin:admin:vendedor
-admin:admin:administrador
