@@ -1,0 +1,16 @@
+Para correr el proyecto, primero corre el comando
+############################
+pip install -r requirements.txt
+############################
+
+El cual instalara todas las librerias necesarias.
+
+Luego ejecuta 
+############################
+python app.py
+############################
+
+Lo cual ejecutara el proyecto.
+
+Recuerda que para ejecutar estos comandos
+debes estar posicionado dentro del a carpeta del proyecto.

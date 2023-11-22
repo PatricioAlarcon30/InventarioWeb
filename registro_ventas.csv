@@ -42,3 +42,4 @@ id_venta,tipo_venta,rut_cliente,nombre_producto,total_venta,fecha_venta,folio,No
 1,efectivo,,Mouse nuevo,150000,2023-11-20,0000105,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
 1,efectivo,,MousePad,6000,2023-11-20,0000106,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
 1,efectivo,,Caja,80000,2023-11-17,0000107,Monsters Inc,66666666-6,525 CUMMING,666666666,sebafrids@gmail.com,8d7c405fed4ee271a8d7e4043e406700.ico,Ventas
+1,Efectivo,123456789,,0,2023-11-30,0000112,,,,,,,

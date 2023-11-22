@@ -3,6 +3,10 @@
 
 #-------------------------------------------------------------------------------------------------------------
 
+import dbm
+from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import check_password_hash
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file, jsonify, make_response,send_from_directory
 from flask_principal import Principal, Permission, RoleNeed, identity_loaded
 import sqlite3
@@ -29,6 +33,9 @@ from functools import wraps
 #-------------------------------------------------------------------------------------------------------------
 #VARIABLES
 app = Flask(__name__, static_folder='static')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tu_basededatos.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 app.secret_key = 'goku1997'
 
 # Configuración de Flask-Principal
@@ -127,7 +134,88 @@ def pagina_de_inicio():
         return redirect(url_for('show_login_form'))
 
 
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
+                                #Inicio
+#
+# Leyendo archivos csv del proyecto, solo sera de lectura para la app movil
+#
+@app.route('/api/ultimas_ventas', methods=['GET'])
+def obtener_ultimas_ventas_json():
+    try:
+        with open('ventas.csv', mode='r', newline='') as archivo_csv:
+            lector_csv = csv.reader(archivo_csv)
+            ultimas_ventas = list(lector_csv)[:]
 
+        # Lista para almacenar las ventas formateadas como diccionarios
+        ultimas_ventas_formateadas = []
+
+        # Recorre las últimas ventas y forma un diccionario para cada una
+        for venta in ultimas_ventas:
+            ultima_venta_dict = {
+                'id': venta[0],
+                'tipo_pago': venta[1],
+                'otra_informacion': venta[2],
+                'producto': venta[3],
+                'monto': venta[4],
+                'fecha': venta[5],
+                'codigo': venta[6]
+            }
+            ultimas_ventas_formateadas.append(ultima_venta_dict)
+
+        # Formatea los datos como un JSON y lo devuelve
+        return jsonify({'ultimas_ventas': ultimas_ventas_formateadas})
+    except FileNotFoundError:
+        return jsonify({'ultimas_ventas': []})
+
+
+@app.route('/api/cantidad_ventas', methods=['GET'])
+def obtener_cantidad_ventas_json():
+    try:
+        with open('ventas.csv', mode='r', newline='') as archivo_csv:
+            lector_csv = csv.reader(archivo_csv)
+            cantidad_ventas = len(list(lector_csv)) - 1  # Resta 1 para excluir el encabezado
+
+        # Formatea los datos como un JSON y lo devuelve
+        return jsonify({'cantidad_ventas': cantidad_ventas})
+    except FileNotFoundError:
+        return jsonify({'cantidad_ventas': 0})
+
+@app.route('/api/cantidad_usuarios', methods=['GET'])
+def obtener_cantidad_usuarios_json():
+    try:
+        with open('users.txt', 'r') as archivo_users:
+            cantidad_usuarios = sum(1 for linea in archivo_users)
+
+        # Formatea los datos como un JSON y lo devuelve
+        return jsonify({'cantidad_usuarios': cantidad_usuarios})
+    except FileNotFoundError:
+        return jsonify({'cantidad_usuarios': 0})
+
+@app.route('/api/cantidad_articulos', methods=['GET'])
+def obtener_cantidad_articulos_json():
+    try:
+        conexion = sqlite3.connect('BDD.db')
+        cursor = conexion.cursor()
+
+        # Consulta para contar la cantidad de artículos en la tabla 'articulo' 
+        cursor.execute("SELECT COUNT(*) FROM articulo")
+        cantidad_articulos = cursor.fetchone()[0]
+
+        # Cierra la conexión a la base de datos
+        conexion.close()
+
+        # Formatea los datos como un JSON y lo devuelve
+        return jsonify({'cantidad_articulos': cantidad_articulos})
+    except sqlite3.Error as error:
+        print("Error al obtener la cantidad de artículos desde la base de datos:", error)
+        return jsonify({'cantidad_articulos': 0})
+
+                            #Fin
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
 
 # Ruta ventas
 @app.route('/ventas')
@@ -142,8 +230,45 @@ def pagina_ventas():
     if datos is not None:
         return render_template('ventas.html', articulos=datos ,username=session.get('usuario_actual'))
 
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
+#
+# esta seccion es para obtener los articulos en json de manera ordenada.
+#
 
+@app.route('/api/articulos', methods=['GET'])
+def obtener_datos_de_articulos_json():
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, nombre, descripcion, cantidad, precio, ubicacion, cantidad_maxima, cantidad_minima FROM articulo")
+        datos = cursor.fetchall()
+        conn.close()
 
+        # Formatea los datos como un JSON y los devuelve
+        articulos_json = []
+        for venta in datos:
+            venta_dict = {
+                'id': venta[0],
+                'nombre': venta[1],
+                'descripcion': venta[2],
+                'cantidad': venta[3],
+                'precio': venta[4],
+                'ubicacion': venta[5],
+                'cantidad_maxima': venta[6],
+                'cantidad_minima': venta[7]
+            }
+            articulos_json.append(venta_dict)
+
+        return jsonify({'articulos': articulos_json})
+    except sqlite3.Error as e:
+        print("Error al obtener datos de la base de datos:", e)
+        return jsonify({'articulos': []})
+
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
 
 # Ruta reportes
 @app.route('/reportes')
@@ -563,6 +688,57 @@ def buscar_producto():
             mensaje = "Producto no encontrado."
             return render_template('resultados.html', mensaje=mensaje)
 
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
+#
+# rutas para filtros
+#
+
+@app.route('/api/buscar_producto/<codigo_barras>', methods=['GET'])
+def buscar_producto_por_codigo_json(codigo_barras):
+    try:
+        # Realiza la búsqueda en la base de datos para obtener los datos del producto
+        conn = sqlite3.connect('BDD.db')  # Asegúrate de usar el nombre correcto de tu base de datos
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM articulo WHERE id = ?', (codigo_barras,))
+        producto = cursor.fetchone()  # Obtiene el producto con el código de barras especificado
+        conn.close()
+
+        if producto:
+            # Si se encuentra el producto, devuelve los detalles del producto en formato JSON
+            producto_json = {
+                'id': producto[0],
+                'nombre': producto[1],
+                'descripcion': producto[2],
+                'cantidad': producto[3],
+                'precio': producto[4],
+                'ubicacion': producto[5],
+                'cantidad_maxima': producto[6],
+                'cantidad_minima': producto[7]
+            }
+            return jsonify({'producto': producto_json})
+        else:
+            mensaje = "Producto no encontrado."
+            return jsonify({'mensaje': mensaje})
+    except sqlite3.Error as e:
+        print("Error al buscar el producto en la base de datos:", e)
+        return jsonify({'mensaje': 'Error al buscar el producto en la base de datos'})
+
+
+
+
+
+
+
+
+
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
+
+
+
         
 # Ruta para procesar la búsqueda de producto
 @app.route('/buscar_producto2', methods=['POST'])
@@ -665,8 +841,29 @@ def eliminar_articulo():
 
         # No necesitas una redirección aquí, pero puedes redirigir a donde desees si es necesario
         return render_template('confirmacioneliminar.html', message="ID eliminada")
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
 
+@app.route('/api/eliminar_articulo/<int:id>', methods=['DELETE'])
+def eliminar_articulo_json(id):
+    try:
+        # Conecta con la base de datos y elimina el artículo
+        conn = conectar_base_de_datos()
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM articulo WHERE id = ?', (id,))
+        conn.commit()
+        conn.close()
 
+        mensaje = f"Artículo con ID {id} eliminado exitosamente."
+        return jsonify({'mensaje': mensaje})
+    except sqlite3.Error as e:
+        print("Error al eliminar el artículo en la base de datos:", e)
+        return jsonify({'mensaje': 'Error al eliminar el artículo en la base de datos'})
+
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
 
 @app.route('/resultado_busqueda', methods=['POST'])
 def resultado_busqueda():
@@ -1154,7 +1351,152 @@ def completar_venta():
         return render_template('ventas.html', total_precio=total_precio, detalles_productos=detalles_venta, folio=folio)
 
 
-    
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
+#
+# Para completar la venta
+#
+@app.route('/api/completar_venta', methods=['POST'])
+def completar_venta_json():
+    try:
+        # Obtén los datos enviados en el cuerpo JSON de la solicitud
+        datos_venta = request.get_json()
+
+        # Obtén el folio ingresado por el usuario desde el formulario
+        folio = obtener_proximo_folio()
+
+        total_venta = calcular_total_precio()  # Calcula el total de la venta
+        global id_venta
+        # Realiza las acciones necesarias para completar la venta en la base de datos
+        # Obtén los valores ingresados por el usuario
+        tipo_venta = datos_venta['tipo_venta']
+        rut_cliente = datos_venta.get('rut_cliente')  # Obtén el RUT del cliente (opcional)
+        fecha_venta = datos_venta['fecha_venta']
+
+        # Conecta con la base de datos
+        conn = sqlite3.connect('BDD.db')
+        cursor = conn.cursor()
+
+        # Inicializa la suma total de precios en cero
+        total_precio = 0
+
+        # Después de procesar la venta, incrementa la ID de la venta
+        usuario_id = 1  # Reemplaza con el ID del usuario que realiza la venta
+        fecha = datetime.now().date()
+        comentario = "Venta realizada"
+
+        # Convierte la fecha al formato "dd-mm-yyyy"
+        fecha_venta = datetime.strptime(fecha_venta, "%Y-%m-%d").strftime("%d-%m-%Y")
+
+        # Calcula el total de la venta antes de procesar los productos
+        total_precio = calcular_total_precio()  # Mover esta línea aquí
+
+        # Lista para almacenar los detalles de la venta
+        detalles_venta = []
+
+        # Inicializa la variable nombre_producto fuera del bucle
+        nombre_producto = None
+
+        # Inicializa datos_empresa fuera del bloque condicional
+        datos_empresa = {}
+
+        # Itera a través de los productos en la lista temporal de venta
+        for item in lista_temporal_venta:
+            id_producto, nombre_producto, cantidad_venta = item  # Desempaqueta la tupla
+
+            # Obtiene el precio del producto desde la base de datos
+            cursor.execute('SELECT precio FROM articulo WHERE id = ?', (id_producto,))
+            row = cursor.fetchone()
+            if row is not None:
+                precio_producto = row[0]
+            else:
+                precio_producto = 0  # Puedes proporcionar un valor predeterminado en caso de que no se encuentre el precio
+
+            # Calcula el subtotal para este producto y agrégalo al total_precio
+            subtotal = precio_producto * cantidad_venta
+            total_precio += subtotal
+
+            # Registra la venta para este producto
+            cursor.execute('INSERT INTO venta (usuario_id, fecha, cantidad, comentario) VALUES (?, ?, ?, ?)',
+                           (usuario_id, fecha, cantidad_venta, comentario))
+
+            # Llama a la función 'guardar_registro_de_venta' con los datos de la venta, excluyendo num_boleta
+            guardar_registro_de_venta(id_venta, tipo_venta, rut_cliente, nombre_producto, total_venta, fecha_venta,
+                                      folio)
+
+            # Actualiza la cantidad disponible del producto en la base de datos
+            cursor.execute('UPDATE articulo SET cantidad = cantidad - ? WHERE id = ?', (cantidad_venta, id_producto))
+
+            # Agrega los detalles de la venta a la lista
+            detalles_venta.append({
+                'nombre_producto': nombre_producto,
+                'cantidad_venta': cantidad_venta,
+                'precio_producto': precio_producto,
+                'subtotal': subtotal
+            })
+
+            # Obtén los datos de la empresa
+            datos_empresa = obtener_datos_empresa()
+        # Crear un diccionario con los datos de la venta y la empresa
+        datos_venta = {
+            'id_venta': id_venta,
+            'tipo_venta': tipo_venta,
+            'rut_cliente': rut_cliente,
+            'nombre_producto': nombre_producto,
+            'total_venta': total_venta,
+            'fecha_venta': datos_venta['fecha_venta'],
+            'folio': folio,
+            'Nombre': datos_empresa.get('Nombre', ''),
+            'RUT': datos_empresa.get('RUT', ''),
+            'Dirección': datos_empresa.get('Dirección', ''),
+            'Número de Contacto': datos_empresa.get('Número de Contacto', ''),
+            'Correo Electrónico': datos_empresa.get('Correo Electrónico', ''),
+            'Logo': datos_empresa.get('Logo', ''),
+            'Giro': datos_empresa.get('Giro', '')
+        }
+        # Guardar los datos de la venta y la empresa en el archivo registro_ventas.csv
+        with open('registro_ventas.csv', mode='a', newline='') as archivo_csv:
+            campos = [
+                'id_venta', 'tipo_venta', 'rut_cliente', 'nombre_producto', 'total_venta',
+                'fecha_venta', 'folio', 'Nombre', 'RUT', 'Dirección', 'Número de Contacto',
+                'Correo Electrónico', 'Logo', 'Giro'
+            ]
+            escritor_csv = csv.DictWriter(archivo_csv, fieldnames=campos)
+
+            # Verificar si el archivo está vacío y escribir encabezados si es necesario
+            if archivo_csv.tell() == 0:
+                escritor_csv.writeheader()
+
+            escritor_csv.writerow(datos_venta)
+
+        # Llama a la función para generar el comprobante
+        generar_comprobante(datos_venta, ruta_boletas)
+        # Limpia la lista temporal de venta
+        lista_temporal_venta.clear()
+
+        # Confirma y cierra la conexión con la base de datos
+        conn.commit()
+        conn.close()
+
+        mensaje_respuesta = f'La venta se ha completado con éxito. Total: {total_precio}'
+        respuesta_json = {
+            'mensaje': mensaje_respuesta,
+            'total_precio': total_precio,
+            'detalles_productos': detalles_venta,
+            'folio': folio
+        }
+
+        return jsonify(respuesta_json)
+    except Exception as e:
+        print("Error al completar la venta:", e)
+        return jsonify({'mensaje': f'Error al completar la venta: {e}'})
+
+
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
+
     
     
     
@@ -1300,6 +1642,137 @@ elements.append(table)
 doc.build(elements)
 
 print(f'PDF generado: {pdf_filename}')
+
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
+
+@app.route('/api/informes', methods=['GET'])
+def informes_ruta():
+    # Registra la acción en el archivo CSV
+    usuario_actual = session.get('usuario_actual')
+    accion = 'Inicio Informes'
+    registrar_actividad(usuario_actual, accion)
+
+    # Leer los datos de ventas desde el archivo CSV
+    ventas_por_articulo = {}
+    with open('ventas.csv', mode='r', newline='') as archivo_csv:
+        lector_csv = csv.reader(archivo_csv)
+        next(lector_csv)  # Salta la primera fila que contiene encabezados
+        for fila in lector_csv:
+            if len(fila) >= 4:  # Asegurarse de que la fila tenga al menos 4 elementos
+                _, _, _, nombre_producto, total_venta, *_ = fila
+                total_venta = float(total_venta)  # Convertir a tipo float
+                if nombre_producto in ventas_por_articulo:
+                    ventas_por_articulo[nombre_producto] += total_venta
+                else:
+                    ventas_por_articulo[nombre_producto] = total_venta
+
+    # Preparar datos para el gráfico de torta
+    articulos = list(ventas_por_articulo.keys())
+    ventas = list(ventas_por_articulo.values())
+
+    # Crear el gráfico de torta
+    plt.figure(figsize=(8, 8))
+    plt.pie(ventas, labels=articulos, autopct='%1.1f%%', startangle=140)
+
+    # Agregar título
+    plt.title("Porcentaje de Ventas Globales por Artículo")
+
+    # Mostrar el gráfico
+    plt.axis('equal')
+
+    # Guardar el gráfico en un archivo o mostrarlo en la página web
+    plt.savefig('static/ventas_globales.png')  # Guardar el gráfico en un archivo
+    # plt.show()  # Mostrar el gráfico en la página web (descomentar esta línea si lo prefieres)
+
+    # Leer los datos del archivo CSV y calcular las ventas por producto
+    ventas_por_producto = {}
+    with open('ventas.csv', mode='r', newline='') as archivo_csv:
+        lector_csv = csv.reader(archivo_csv)
+        next(lector_csv)  # Salta la primera fila que contiene encabezados
+        for fila in lector_csv:
+            if len(fila) >= 7:  # Asegurarse de que la fila tenga al menos 7 elementos
+                id_venta, tipo_venta, rut_cliente, nombre_producto, total_venta, fecha_venta, folio = fila
+                if nombre_producto in ventas_por_producto:
+                    ventas_por_producto[nombre_producto] += int(total_venta)
+                else:
+                    ventas_por_producto[nombre_producto] = int(total_venta)
+
+    ventas_por_tipo = leer_datos_ventas()
+    tablas_html = generar_tablas_html(ventas_por_tipo)
+
+    # Obtener nombres de productos y ventas como listas separadas
+    productos = list(ventas_por_producto.keys())
+    ventas = list(ventas_por_producto.values())
+
+    # Crea el gráfico de barras
+    plt.figure(figsize=(11, 8))
+    plt.bar(productos, ventas)
+    plt.xlabel('Nombre del Producto')
+    plt.ylabel('Ventas')
+    plt.title('Ventas por Producto')
+
+    # Rotar etiquetas del eje x para mejorar la legibilidad
+    plt.xticks(rotation=16, ha="right")
+
+    # Guarda el gráfico en un archivo temporal
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+
+    # Codifica la imagen en base64
+    img_base64 = base64.b64encode(img.read()).decode()
+
+    # Cierra la figura de matplotlib
+    plt.close()
+
+    # Crear un archivo PDF
+    pdf_filename = 'lista_de_articulos.pdf'
+    doc = SimpleDocTemplate(pdf_filename, pagesize=letter)
+
+    # Crear una lista de artículos en formato de tabla
+    data = [['ID', 'Nombre', 'Cantidad', 'Precio', 'Ubicación']]
+    data.extend(articulos)
+
+    # Crear la tabla y establecer el estilo
+    table = Table(data)
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), (0.8, 0.8, 0.8)),  # Fila de encabezados
+        ('TEXTCOLOR', (0, 0), (-1, 0), (0, 0, 0)),  # Color de texto de encabezados
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  # Alineación centrada para todas las celdas
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),  # Fuente en negrita para los encabezados
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),  # Espacio inferior para los encabezados
+        ('BACKGROUND', (0, 1), (-1, -1), (0.9, 0.9, 0.9)),  # Color de fondo para las filas de datos
+        ('GRID', (0, 0), (-1, -1), 1, (0, 0, 0)),  # Líneas de cuadrícula
+    ])
+    table.setStyle(style)
+
+    # Crear la lista de elementos a ser incluidos en el PDF
+    elements = []
+
+    # Agregar un título al PDF
+    styles = getSampleStyleSheet()
+    title = Paragraph('<b>Lista de Artículos</b>', styles['Title'])
+    elements.append(title)
+
+    # Agregar la tabla al PDF
+    elements.append(table)
+
+    # Generar el PDF y guardarlo
+    doc.build(elements)
+
+    print(f'PDF generado: {pdf_filename}')
+
+    # Enviar el archivo PDF como respuesta a la solicitud
+    return send_file(pdf_filename, as_attachment=True)
+
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
+
+
+
 
 # Ruta para mostrar el PDF en la página de informes
 @app.route('/ver_pdf', methods=['GET'])
@@ -1957,18 +2430,60 @@ def forbidden_error(e):
 
 
 
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
+#
+#Login de usuarios
+#
+
+@app.route('/api/login', methods=['POST'])
+def api_login():
+    # Obtener datos del cuerpo de la solicitud
+    data = request.get_json()
+
+    # Extraer nombre de usuario y contraseña
+    nombre_usuario = data.get('nombre_usuario')
+    contrasena = data.get('contrasena')
+
+    # Conectar a la base de datos SQLite
+    conn = sqlite3.connect('BDD.db')
+    cursor = conn.cursor()
+
+    try:
+        # Consultar la base de datos para obtener las credenciales del usuario
+        query = f"SELECT id, nombre, contrasena, rol_id FROM usuario WHERE nombre = ?"
+        cursor.execute(query, (nombre_usuario,))
+        result = cursor.fetchone()
+
+        # Verificar las credenciales
+        if result and result[2] == contrasena:  # La posición 2 es la contraseña
+            # Autenticación exitosa
+            response = {
+                'mensaje': 'Inicio de sesión exitoso',
+                'autenticado': True,
+                'usuario_id': result[0],
+                'nombre_usuario': result[1],
+                'rol_id': result[3]
+            }
+        else:
+            # Autenticación fallida
+            response = {
+                'mensaje': 'Nombre de usuario o contraseña incorrectos',
+                'autenticado': False
+            }
+    finally:
+        # Cerrar la conexión a la base de datos
+        conn.close()
+
+    return jsonify(response)
+        
+#######################################################################
+####################Actualizacion: Patricio Alarcon####################
+#######################################################################
 
 
-#---------------------------------------
-
-
-
-
-
-
-
-
-
+        
 if __name__ == '__main__':
     app.run(debug=True)
 
