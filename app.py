@@ -41,7 +41,7 @@ from fpdf import FPDF
 from collections import defaultdict
 import glob
 from functools import wraps
-
+from flask_cors import CORS
 # -------------------------------------------------------------------------------------------------------------
 # VARIABLES
 app = Flask(__name__, static_folder="static")
@@ -49,10 +49,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///tu_basededatos.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 app.secret_key = "goku1997"
-
-# Configuración de Flask-Principal
 principal = Principal(app)
-
+CORS(app)
 # ---- VARIABLES ----
 # Configura la ubicación de tu base de datos SQLite
 DATABASE = "BDD.db"
@@ -2268,15 +2266,14 @@ def forbidden_error(e):
 #######################################################################
 #######################################################################
 
-#   $$$$$$\  $$$$$$$\ $$$$$$\       $$$$$$$\  $$$$$$$$\  $$$$$$\ $$$$$$$$\ 
+#   $$$$$$\  $$$$$$$\ $$$$$$\       $$$$$$$\  $$$$$$$$\  $$$$$$\ $$$$$$$$\
 #  $$  __$$\ $$  __$$\\_$$  _|      $$  __$$\ $$  _____|$$  __$$\\__$$  __|
-#  $$ /  $$ |$$ |  $$ | $$ |        $$ |  $$ |$$ |      $$ /  \__|  $$ |   
-#  $$$$$$$$ |$$$$$$$  | $$ |        $$$$$$$  |$$$$$\    \$$$$$$\    $$ |   
-#  $$  __$$ |$$  ____/  $$ |        $$  __$$< $$  __|    \____$$\   $$ |   
-#  $$ |  $$ |$$ |       $$ |        $$ |  $$ |$$ |      $$\   $$ |  $$ |   
-#  $$ |  $$ |$$ |     $$$$$$\       $$ |  $$ |$$$$$$$$\ \$$$$$$  |  $$ |   
-#  \__|  \__|\__|     \______|      \__|  \__|\________| \______/   \__|   
-
+#  $$ /  $$ |$$ |  $$ | $$ |        $$ |  $$ |$$ |      $$ /  \__|  $$ |
+#  $$$$$$$$ |$$$$$$$  | $$ |        $$$$$$$  |$$$$$\    \$$$$$$\    $$ |
+#  $$  __$$ |$$  ____/  $$ |        $$  __$$< $$  __|    \____$$\   $$ |
+#  $$ |  $$ |$$ |       $$ |        $$ |  $$ |$$ |      $$\   $$ |  $$ |
+#  $$ |  $$ |$$ |     $$$$$$\       $$ |  $$ |$$$$$$$$\ \$$$$$$  |  $$ |
+#  \__|  \__|\__|     \______|      \__|  \__|\________| \______/   \__|
 
 
 @app.route("/v2/api/informes/", methods=["GET"])
@@ -2548,12 +2545,70 @@ def completar_venta_json():
         print("Error al completar la venta:", e)
         return jsonify({"mensaje": f"Error al completar la venta: {e}"})
 
+#
+# Obtener persona
+#
+
+
+#
+# Registro de usuario
+#
+@app.route("/api/register", methods=["POST"])
+def api_register():
+    # Obtener datos del cuerpo de la solicitud
+    data = request.get_json()
+
+    # Extraer nombre de usuario, contraseña y rol_id
+    nombre_usuario = data.get("nombre_usuario")
+    contrasena = data.get("contrasena")
+    rol_id = data.get("rol_id")
+
+    # Conectar a la base de datos SQLite
+    conn = sqlite3.connect("BDD.db")
+    cursor = conn.cursor()
+
+    try:
+        # Consultar la base de datos para obtener el último id
+        query = f"SELECT MAX(id) FROM usuario"
+        cursor.execute(query)
+        result = cursor.fetchone()
+
+        # Calcular el nuevo id
+        nuevo_id = result[0] + 1 if result[0] is not None else 1
+
+        # Insertar el nuevo usuario en la base de datos
+        query = f"INSERT INTO usuario (id, nombre, contrasena, rol_id) VALUES (?, ?, ?, ?)"
+        cursor.execute(query, (nuevo_id, nombre_usuario, contrasena, rol_id))
+
+        # Confirmar los cambios
+        conn.commit()
+
+        # Crear la respuesta
+        response = {
+            "mensaje": "Registro exitoso",
+            "registrado": True,
+            "usuario_id": nuevo_id,
+            "nombre_usuario": nombre_usuario,
+            "rol_id": rol_id,
+        }
+    except sqlite3.Error as error:
+        # Si ocurre un error, crear una respuesta de error
+        response = {
+            "mensaje": str(error),
+            "registrado": False,
+        }
+    finally:
+        # Cerrar la conexión a la base de datos
+        conn.close()
+
+    return jsonify(response)
+
+
+
 
 #
 # Login de usuarios
 #
-
-
 @app.route("/api/login", methods=["POST"])
 def api_login():
     # Obtener datos del cuerpo de la solicitud
