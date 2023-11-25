@@ -42,6 +42,7 @@ from collections import defaultdict
 import glob
 from functools import wraps
 from flask_cors import CORS
+
 # -------------------------------------------------------------------------------------------------------------
 # VARIABLES
 app = Flask(__name__, static_folder="static")
@@ -1483,10 +1484,24 @@ def generar_tablas_html(ventas_por_tipo):
     tablas_html = []
     for tipo_venta, ventas in ventas_por_tipo.items():
         # Crear una tabla HTML para cada tipo de venta
-        tabla_html = f"<h2>Tabla de {tipo_venta}</h2>"
+        tabla_html = "<style>"
+        tabla_html += ".tabla-container { margin: 0 auto; padding: 20px; background-color: #f8f9fa; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); overflow-x: auto; }"
+        tabla_html += (
+            "table { border-collapse: collapse; width: 100%; font-size: 0.9em; }"
+        )
+        tabla_html += "table thead tr { background-color: #007bff; color: #ffffff; text-align: left; }"
+        tabla_html += "table th, table td { padding: 12px 15px; }"
+        tabla_html += "table tbody tr { border-bottom: 1px solid #dddddd; }"
+        tabla_html += "table tbody tr:nth-of-type(even) { background-color: #f3f3f3; }"
+        tabla_html += (
+            "table tbody tr:last-of-type { border-bottom: 2px solid #007bff; }"
+        )
+        tabla_html += ".total-recuadro { margin-top: 20px; padding: 10px; background-color: #007bff; color: #ffffff; text-align: right; border-radius: 5px; }"
+        tabla_html += "@media screen and (max-width: 600px) { table { width: 100%; } }"  # Añadir regla de medios para manejar pantallas pequeñas
+        tabla_html += "</style>"
         tabla_html += '<div class="tabla-container">'
         tabla_html += '<div class="tabla-scroll">'
-        tabla_html += "<table><tr><th>ID Venta</th><th>RUT Cliente</th><th>Nombre Producto</th><th>Total Venta</th><th>Fecha Venta</th><th>Folio</th></tr>"
+        tabla_html += f"<table><h2 style='color: black;'>Tabla de {tipo_venta}</h2><tr><th>ID Venta</th><th>RUT Cliente</th><th>Nombre Producto</th><th>Total Venta</th><th>Fecha Venta</th><th>Folio</th></tr>"
         suma_total = 0  # Inicializar la suma del monto total
         for venta in ventas:
             (
@@ -1505,9 +1520,10 @@ def generar_tablas_html(ventas_por_tipo):
         tabla_html += "</div>"  # Cierre del contenedor de la tabla
 
         # Agregar el total dentro de un recuadro
-        tabla_html += (
-            f'<div class="total-recuadro">Recaudación Total: {suma_total}</div>'
-        )
+        suma_total_formato_dinero = "${:,}".format(
+            suma_total
+        )  # Formatear suma_total a formato de dinero
+        tabla_html += f'<div class="total-recuadro">Recaudación Total: {suma_total_formato_dinero}</div>'
 
         tablas_html.append(tabla_html)
     return tablas_html
@@ -2276,7 +2292,7 @@ def forbidden_error(e):
 #  \__|  \__|\__|     \______|      \__|  \__|\________| \______/   \__|
 
 
-@app.route("/v2/api/informes/", methods=["GET"])
+@app.route("/v2/api/informes", methods=["GET"])
 def informesv2():
     # Registra la acción en el archivo CSV
     usuario_actual = session.get("usuario_actual")
@@ -2343,9 +2359,6 @@ def informesv2():
                 else:
                     ventas_por_producto[nombre_producto] = int(total_venta)
 
-    ventas_por_tipo = leer_datos_ventas()
-    tablas_html = generar_tablas_html(ventas_por_tipo)
-
     # Obtener nombres de productos y ventas como listas separadas
     productos = list(ventas_por_producto.keys())
     ventas = list(ventas_por_producto.values())
@@ -2371,13 +2384,211 @@ def informesv2():
     # Cierra la figura de matplotlib
     plt.close()
 
+    torta = request.args.get("torta", default="no", type=str)
+    grafico = request.args.get("grafico", default="no", type=str)
+    tabla = request.args.get("tabla", default="no", type=str)
     # Puedes enviar la imagen en el cuerpo de la respuesta junto con otros datos
-    return {
-        "img_base64": img_base64,
-        "tablas": tablas_html,
-        "username": session.get("usuario_actual"),
-        "img_base64_2": img_base64_2,
-    }
+
+    if torta == "si":
+        return {
+            "img_base64": img_base64,
+        }
+
+    if tabla == "si":
+        ventas_por_tipo = leer_datos_ventas()
+        tablas_html = generar_tablas_html(ventas_por_tipo)
+        return {
+            "tablas": tablas_html,
+        }
+    if grafico == "si":
+        return {
+            "img_base64_2": img_base64_2,
+        }
+
+
+#
+# Registrar un producto
+#
+
+
+@app.route("/api/registrar_producto", methods=["POST"])
+def registrar_producto():
+    try:
+        # Obtener datos del cuerpo de la solicitud
+        data = request.get_json()
+
+        # Extraer datos del producto
+        id_producto = data.get("id_producto")
+        nombre = data.get("nombre")
+        descripcion = data.get("descripcion")
+        cantidad = data.get("cantidad")
+        precio = data.get("precio")
+        ubicacion = data.get("ubicacion")
+        cantidad_maxima = data.get("cantidad_maxima")
+        cantidad_minima = data.get("cantidad_minima")
+
+        # Conectar a la base de datos SQLite
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+
+        # Insertar el nuevo producto en la base de datos
+        query = (
+            "INSERT INTO articulo (id, nombre, descripcion, cantidad, precio, ubicacion, cantidad_maxima, cantidad_minima) "
+            "VALUES (?,?, ?, ?, ?, ?, ?, ?)"
+        )
+        cursor.execute(
+            query,
+            (
+                id_producto,
+                nombre,
+                descripcion,
+                cantidad,
+                precio,
+                ubicacion,
+                cantidad_maxima,
+                cantidad_minima,
+            ),
+        )
+
+        # Confirmar los cambios
+        conn.commit()
+
+        # Obtener el ID del producto recién insertado
+        producto_id = cursor.lastrowid
+
+        # Cerrar la conexión a la base de datos
+        conn.close()
+
+        # Crear la respuesta exitosa
+        response = {
+            "mensaje": "Registro exitoso",
+            "registrado": True,
+            "producto_id": producto_id,
+            "nombre": nombre,
+        }
+
+        return jsonify(response)
+    except sqlite3.Error as e:
+        print("Error al insertar datos en la base de datos:", e)
+        return (
+            jsonify(
+                {"error": "Ocurrió un error al insertar el producto en el inventario."}
+            ),
+            500,
+        )
+
+
+# Ruta para actualizar un producto
+@app.route("/api/actualizar_producto", methods=["PUT"])
+def actualizar_producto():
+    try:
+        # Obtener datos del cuerpo de la solicitud
+        data = request.get_json()
+
+        # Extraer datos del producto actualizado
+        id_producto = data.get("id_producto")
+        nombre = data.get("nombre")
+        descripcion = data.get("descripcion")
+        cantidad = data.get("cantidad")
+        precio = data.get("precio")
+        ubicacion = data.get("ubicacion")
+        cantidad_maxima = data.get("cantidad_maxima")
+        cantidad_minima = data.get("cantidad_minima")
+
+        print("Datos que llegan al endpoint:")
+        print(f"id_producto: {id_producto}")
+        print(f"nombre: {nombre}")
+        print(f"descripcion: {descripcion}")
+        print(f"cantidad: {cantidad}")
+        print(f"precio: {precio}")
+        print(f"ubicacion: {ubicacion}")
+        print(f"cantidad_maxima: {cantidad_maxima}")
+        print(f"cantidad_minima: {cantidad_minima}")
+
+        # Conectar a la base de datos SQLite
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+
+        try:
+            # Actualizar el producto en la base de datos
+            query = "UPDATE articulo SET nombre=?, descripcion=?, cantidad=?, precio=?, ubicacion=?, cantidad_maxima=?, cantidad_minima=? WHERE id=?;"
+            cursor.execute(
+                query,
+                (
+                    nombre,
+                    descripcion,
+                    cantidad,
+                    precio,
+                    ubicacion,
+                    cantidad_maxima,
+                    cantidad_minima,
+                    id_producto,
+                ),
+            )
+            print("Query:", query)
+
+            # Confirmar los cambios
+            conn.commit()
+            # Crear la respuesta
+            response = {
+                "mensaje": "Producto actualizado con éxito",
+                "actualizado": True,
+            }
+        except sqlite3.Error as error:
+            # Si ocurre un error, crear una respuesta de error
+            response = {
+                "mensaje": str(error),
+                "actualizado": False,
+            }
+        finally:
+            # Cerrar la conexión a la base de datos
+            conn.close()
+
+        return jsonify(response)
+
+    except Exception as e:
+        return jsonify({"mensaje": f"Error en el servidor: {str(e)}"}), 500
+
+
+#
+# Inventario de productos
+#
+
+
+@app.route("/api/inventario", methods=["GET"])
+def obtener_inventario():
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT id, nombre, descripcion, cantidad, precio, ubicacion, cantidad_maxima, cantidad_minima FROM articulo ORDER BY ROWID DESC; "
+        )
+        datos = cursor.fetchall()
+        conn.close()
+
+        # Convertir los datos a un formato JSON
+        inventario = []
+        for fila in datos:
+            inventario.append(
+                {
+                    "id": fila[0],
+                    "nombre": fila[1],
+                    "descripcion": fila[2],
+                    "cantidad": fila[3],
+                    "precio": fila[4],
+                    "ubicacion": fila[5],
+                    "cantidad_maxima": fila[6],
+                    "cantidad_minima": fila[7],
+                }
+            )
+
+        return jsonify(inventario)
+    except sqlite3.Error as e:
+        print("Error al obtener datos de la base de datos:", e)
+        return (
+            jsonify({"error": "Ocurrió un error al obtener los datos del inventario."}),
+            500,
+        )
 
 
 #
@@ -2545,10 +2756,6 @@ def completar_venta_json():
         print("Error al completar la venta:", e)
         return jsonify({"mensaje": f"Error al completar la venta: {e}"})
 
-#
-# Obtener persona
-#
-
 
 #
 # Registro de usuario
@@ -2577,7 +2784,9 @@ def api_register():
         nuevo_id = result[0] + 1 if result[0] is not None else 1
 
         # Insertar el nuevo usuario en la base de datos
-        query = f"INSERT INTO usuario (id, nombre, contrasena, rol_id) VALUES (?, ?, ?, ?)"
+        query = (
+            f"INSERT INTO usuario (id, nombre, contrasena, rol_id) VALUES (?, ?, ?, ?)"
+        )
         cursor.execute(query, (nuevo_id, nombre_usuario, contrasena, rol_id))
 
         # Confirmar los cambios
@@ -2602,8 +2811,6 @@ def api_register():
         conn.close()
 
     return jsonify(response)
-
-
 
 
 #
@@ -2673,39 +2880,39 @@ def eliminar_articulo_json(id):
 #
 
 
-@app.route("/api/buscar_producto/<codigo_barras>", methods=["GET"])
-def buscar_producto_por_codigo_json(codigo_barras):
+@app.route("/api/inventario/<int:id_producto>", methods=["GET"])
+def obtener_producto_por_id(id_producto):
     try:
-        # Realiza la búsqueda en la base de datos para obtener los datos del producto
-        conn = sqlite3.connect(
-            "BDD.db"
-        )  # Asegúrate de usar el nombre correcto de tu base de datos
+        conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM articulo WHERE id = ?", (codigo_barras,))
-        producto = (
-            cursor.fetchone()
-        )  # Obtiene el producto con el código de barras especificado
+        cursor.execute(
+            "SELECT id, nombre, descripcion, cantidad, precio, ubicacion, cantidad_maxima, cantidad_minima "
+            "FROM articulo WHERE id = ?",
+            (id_producto,),
+        )
+        datos = cursor.fetchone()
         conn.close()
 
-        if producto:
-            # Si se encuentra el producto, devuelve los detalles del producto en formato JSON
-            producto_json = {
-                "id": producto[0],
-                "nombre": producto[1],
-                "descripcion": producto[2],
-                "cantidad": producto[3],
-                "precio": producto[4],
-                "ubicacion": producto[5],
-                "cantidad_maxima": producto[6],
-                "cantidad_minima": producto[7],
+        if datos:
+            producto = {
+                "id": datos[0],
+                "nombre": datos[1],
+                "descripcion": datos[2],
+                "cantidad": datos[3],
+                "precio": datos[4],
+                "ubicacion": datos[5],
+                "cantidad_maxima": datos[6],
+                "cantidad_minima": datos[7],
             }
-            return jsonify({"producto": producto_json})
+            return jsonify(producto)
         else:
-            mensaje = "Producto no encontrado."
-            return jsonify({"mensaje": mensaje})
+            return jsonify({"error": "Producto no encontrado"}), 404
     except sqlite3.Error as e:
-        print("Error al buscar el producto en la base de datos:", e)
-        return jsonify({"mensaje": "Error al buscar el producto en la base de datos"})
+        print("Error al obtener datos de la base de datos:", e)
+        return (
+            jsonify({"error": "Ocurrió un error al obtener el producto."}),
+            500,
+        )
 
 
 #
@@ -2831,7 +3038,7 @@ def obtener_cantidad_articulos_json():
 
         # Fin
 
-
+#fin
 #######################################################################
 #######################################################################
 #######################################################################
