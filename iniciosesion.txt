@@ -149,3 +149,4 @@ Usuario: admin, Fecha de inicio de sesión: 2023-11-23 23:44:26
 Usuario: vendedor, Fecha de inicio de sesión: 2023-11-24 00:16:35
 Usuario: admin, Fecha de inicio de sesión: 2023-11-24 01:25:07
 Usuario: admin, Fecha de inicio de sesión: 2023-11-24 13:35:25
+Usuario: admin, Fecha de inicio de sesión: 2023-11-24 23:20:30

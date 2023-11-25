@@ -1,7 +1,7 @@
 # IMPORT PARA EL SISTEMA
 
 # -------------------------------------------------------------------------------------------------------------
-
+from unidecode import unidecode 
 import dbm
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -3036,9 +3036,52 @@ def obtener_cantidad_articulos_json():
         )
         return jsonify({"cantidad_articulos": 0})
 
-        # Fin
 
-#fin
+def formatear_clave(nombre):
+    # Reemplazar espacios y caracteres no deseados en el nombre de la clave
+    nombre = nombre.replace(" ", "_").replace("�", "")
+    return nombre
+
+
+def formatear_nombre_clave(nombre):
+    # Formatear el nombre de la clave según el formato deseado
+    mapeo_nombres = {
+        "Correo_Electronico": "Correo Electronico",
+        "Direccion": "Direccion",
+        "Giro": "Giro",
+        "Logo": "Logo",
+        "Nombre": "Nombre",
+        "Numero_de_Contacto": "Numero de Contacto",
+        "RUT": "RUT",
+    }
+    return mapeo_nombres.get(nombre, nombre)
+
+
+@app.route("/api/informacion_empresa", methods=["GET"])
+def mostrar_informacion():
+    # Registra la acción en el archivo CSV
+    usuario_actual = session.get("usuario_actual")
+    accion = "Inicio información empresa"
+    registrar_actividad(usuario_actual, accion)
+
+    # Leer la información de la empresa desde el archivo empresa.csv (si existe)
+    informacion_empresa = {}
+    if os.path.isfile("empresa.csv"):
+        with open("empresa.csv", mode="r", newline="") as archivo_csv:
+            lector_csv = csv.DictReader(archivo_csv)
+            for row in lector_csv:
+                informacion_empresa = row
+
+    # Crear un nuevo diccionario con las claves formateadas y sin tildes
+    informacion_empresa_formateada = {
+        unidecode(formatear_nombre_clave(formatear_clave(k))): v
+        for k, v in informacion_empresa.items()
+    }
+
+    return jsonify(informacion_empresa_formateada)
+
+
+# fin
 #######################################################################
 #######################################################################
 #######################################################################
